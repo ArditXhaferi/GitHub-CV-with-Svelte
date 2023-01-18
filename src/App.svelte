@@ -1,10 +1,13 @@
 <script>
-	import Contributions from "./Contributions.svelte";
+	import Contributions from "./components/Contributions.svelte";
+	import Repos from "./components/Repos.svelte";
 	import { fetchDataForAllYears } from "../scripts/fetch";
+    import Rating from "./components/Rating.svelte";
 	let name = "arditxhaferi";
 	let src = "favicon.png";
 	let username = "John Doe";
 	let contributions = [];
+	let repos_sorted = [];
 	let jokes = {
 		JavaScript:
 			"Why was the JavaScript developer sad? Because they didn't know how to 'null' their feelings.",
@@ -55,16 +58,23 @@
 	};
 
 	const createCV = async () => {
-		handleContributions()
+		handleProfile()
+		// handleContributions()
+	};
+
+	const handleProfile = async () => {
 		let repos = await githubRequest(
-			`https://api.github.com/users/$name$/repos`,
+			`https://api.github.com/users/$name$/repos?per_page=100`,
 			name
 		);
 
-		console.log(repos, "TEST");
+		repos_sorted = repos.sort(function(a, b) {
+			return b.stargazers_count - a.stargazers_count;
+		}).slice(0, 3);
+
 		src = repos[0]["owner"]["avatar_url"];
 		username = repos[0]["owner"]["login"];
-	};
+	}
 
 	const handleContributions = async () => {
 		let allContributions = await fetchDataForAllYears(name, "nested");
@@ -103,6 +113,7 @@
 				<Contributions contribution_list={contributions} />
 			</div>
 		</div>
+		<Repos repos_list={repos_sorted}/>
 	</div>
 </main>
 
@@ -129,11 +140,16 @@
 	}
 
 	.container {
-		width: 400px;
-		height: 500px;
+		min-width: 400px;
+		max-width: 400px;
+		min-height: 500px;
+		max-height: 500px;
 		background-color: #22272d;
+		color: white;
 		border-radius: 40px;
 		padding: 25px;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.profile {
