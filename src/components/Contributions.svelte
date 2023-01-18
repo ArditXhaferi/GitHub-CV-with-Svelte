@@ -20,13 +20,13 @@
     .contributions{
         display: grid;
         grid-template-columns: repeat(10, 1fr);
-        grid-gap: 10px;
+        grid-gap: 5px;
     }
 
     .contribution{
-        width: 20px;
-        height: 20px;
-        border-radius: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
         background-color: aliceblue;
     }
 
