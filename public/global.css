@@ -8,6 +8,7 @@ html, body {
 
 body {
 	background-image: url("/pattern1.svg");
+	display: flex;
 	background-size: 200px;
 	margin: 0;
 	overflow: scroll;
