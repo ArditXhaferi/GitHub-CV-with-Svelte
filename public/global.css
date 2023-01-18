@@ -2,12 +2,15 @@ html, body {
 	position: relative;
 	width: 100%;
 	height: 100%;
+	margin: 0px;
+	padding: 0px;
 }
 
 body {
-	color: #333;
+	background-image: url("/pattern1.svg");
+	background-size: 200px;
 	margin: 0;
-	padding: 8px;
+	overflow: scroll;
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
