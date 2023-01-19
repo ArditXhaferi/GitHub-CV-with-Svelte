@@ -8,9 +8,23 @@ body {
 	background-color: #403357;
 }
 
+@font-face {
+    font-family: 'Hubot';
+    font-display: swap;
+	font-weight: 700;
+    src: url(/fonts/Hubot-Sans-Bold.woff2) format("woff2");
+}
+
+@font-face {
+    font-family: 'Hubot';
+    font-display: swap;
+	font-weight: 400;
+    src: url(/fonts/Hubot-Sans.woff2) format("woff2");
+}
+
 body {
 	display: flex;
-
+	font-family: 'Hubot';
 	height: 100%;
 	margin: 0;
 	box-sizing: border-box;

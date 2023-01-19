@@ -3,6 +3,7 @@
 	import Repos from "./components/Repos.svelte";
 	import { fetchDataForAllYears } from "../scripts/fetch";
     import Languages from "./components/Languages.svelte";
+    import Entry from "./pages/Entry.svelte";
 	let name = "arditxhaferi";
 	let src = "favicon.png";
 	let username = "John Doe";
@@ -124,17 +125,10 @@
 		});
 	}
 
-	// fetch(``)
-	// 	.then(response => response.json())
-	// 	.then(data => {
-	// 		console.log(data);
-	// 	}).catch(error => {
-	// 		console.log(error);
-	// 		return [];
-	// 	});
 </script>
 
 <main>
+	<Entry />
 	<p>Hello {name || "stranger"}!</p>
 	<input
 		on:change={createCV}
@@ -157,7 +151,6 @@
 <style>
 	main {
 		width: 100%;
-		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -190,6 +183,7 @@
 		padding: 25px;
 		display: flex;
 		flex-direction: column;
+		display: none;
 	}
 
 	.profile {
