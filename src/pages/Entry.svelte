@@ -1,27 +1,18 @@
 <script>
-    // const container = document.querySelector(".entry");
-    // console.log(container)
-    // container.addEventListener("mousemove", (e) => {
-    //     const eyes = document.querySelectorAll(".eye");
-    //     [].forEach.call(eyes, function (eye) {
-    //         let mouseX = eye.getBoundingClientRect().right;
-    //         if (eye.classList.contains("eye-left")) {
-    //             mouseX = eye.getBoundingClientRect().left;
-    //         }
-    //         let mouseY = eye.getBoundingClientRect().top;
-    //         let radianDegrees = Math.atan2(e.pageX - mouseX, e.pageY - mouseY);
-    //         let rotationDegrees = radianDegrees * (180 / Math.PI) * -1 + 180;
-    //         eye.style.transform = `rotate(${rotationDegrees}deg)`;
-    //     });
-    // });
+
+    import Input from "../components/Input.svelte";
+
 </script>
 
 <div class="entry">
-    <img src="./github.png">
     <div>
-        <h1>How Bad Is Your GitHub Profile?</h1>
-        <h4>Check urself before you wreck urself in those FAANG interviews</h4>
+        <img src="./github.png">
+        <div>
+            <h1>How Bad Is Your GitHub Profile?</h1>
+            <h4>Check urself before you wreck urself in those FAANG interviews</h4>
+        </div>
     </div>
+    <Input />
 </div>
 
 <style>
@@ -40,8 +31,9 @@
         color: black;
         background-color: white;
         border-radius: 16px;
-        padding: 24px 40px;
+        padding: 40px 40px;
         align-items: center;
+        justify-content: space-between;
     }
 
     .entry img{
