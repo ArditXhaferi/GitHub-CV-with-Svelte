@@ -4,7 +4,7 @@
 	import { fetchDataForAllYears } from "../scripts/fetch";
     import Languages from "./components/Languages.svelte";
     import Entry from "./pages/Entry.svelte";
-	let name = "arditxhaferi";
+	let name = "stanger";
 	let src = "favicon.png";
 	let username = "John Doe";
 	let contributions = [];
@@ -128,13 +128,7 @@
 </script>
 
 <main>
-	<Entry />
-	<p>Hello {name || "stranger"}!</p>
-	<input
-		on:change={createCV}
-		bind:value={name}
-		placeholder="enter your name"
-	/>
+	<Entry bind:name="{name}" create={createCV} />
 	<div class="container">
 		<div class="profile_container">
 			<img {src} alt="profile" class="profile" />

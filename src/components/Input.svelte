@@ -1,13 +1,21 @@
+<script>
+    export let name = ''
+    export let create;
+</script>
+
 <div class="inputWithButton">
     <div class="item">
         <input
+            bind:value={name}
             class="searchInpt"
             type="text"
             placeholder="Github Username"
         />
     </div>
     <div class="item">
-        <button class="btnSearch btnAqua">
+        <button 
+            on:click={create()}
+            class="btnSearch">
             Check urself
             <i class="icon">
                 <svg

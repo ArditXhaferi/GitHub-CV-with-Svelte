@@ -114,6 +114,9 @@ var app = (function () {
     function add_render_callback(fn) {
         render_callbacks.push(fn);
     }
+    function add_flush_callback(fn) {
+        flush_callbacks.push(fn);
+    }
     // flush() calls callbacks in this order:
     // 1. All beforeUpdate callbacks, in order: parents before children
     // 2. All bind:this callbacks, in reverse order: children before parents.
@@ -240,6 +243,14 @@ var app = (function () {
         : typeof globalThis !== 'undefined'
             ? globalThis
             : global);
+
+    function bind(component, name, callback) {
+        const index = component.$$.props[name];
+        if (index !== undefined) {
+            component.$$.bound[index] = callback;
+            callback(component.$$.ctx[index]);
+        }
+    }
     function create_component(block) {
         block && block.c();
     }
@@ -35038,6 +35049,8 @@ var app = (function () {
     	let i;
     	let svg;
     	let path;
+    	let mounted;
+    	let dispose;
 
     	const block = {
     		c: function create() {
@@ -35054,26 +35067,26 @@ var app = (function () {
     			attr_dev(input, "class", "searchInpt svelte-13f0zz6");
     			attr_dev(input, "type", "text");
     			attr_dev(input, "placeholder", "Github Username");
-    			add_location(input, file$2, 2, 8, 61);
+    			add_location(input, file$2, 7, 8, 129);
     			attr_dev(div0, "class", "item svelte-13f0zz6");
-    			add_location(div0, file$2, 1, 4, 34);
+    			add_location(div0, file$2, 6, 4, 102);
     			attr_dev(path, "d", "M0 3.76172H10.6172L7.94531 1.05469L9 0L13.5 4.5L9 9L7.94531 7.94531L10.6172 5.23828H0V3.76172Z");
     			attr_dev(path, "fill", "white");
-    			add_location(path, file$2, 19, 20, 554);
+    			add_location(path, file$2, 27, 20, 689);
     			attr_dev(svg, "width", "14");
     			attr_dev(svg, "height", "9");
     			attr_dev(svg, "viewBox", "0 0 14 9");
     			attr_dev(svg, "fill", "none");
     			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
-    			add_location(svg, file$2, 12, 16, 323);
+    			add_location(svg, file$2, 20, 16, 458);
     			attr_dev(i, "class", "icon svelte-13f0zz6");
-    			add_location(i, file$2, 11, 12, 290);
-    			attr_dev(button, "class", "btnSearch btnAqua svelte-13f0zz6");
-    			add_location(button, file$2, 9, 8, 218);
+    			add_location(i, file$2, 19, 12, 425);
+    			attr_dev(button, "class", "btnSearch svelte-13f0zz6");
+    			add_location(button, file$2, 15, 8, 316);
     			attr_dev(div1, "class", "item svelte-13f0zz6");
-    			add_location(div1, file$2, 8, 4, 191);
+    			add_location(div1, file$2, 14, 4, 289);
     			attr_dev(div2, "class", "inputWithButton svelte-13f0zz6");
-    			add_location(div2, file$2, 0, 0, 0);
+    			add_location(div2, file$2, 5, 0, 68);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -35082,6 +35095,7 @@ var app = (function () {
     			insert_dev(target, div2, anchor);
     			append_dev(div2, div0);
     			append_dev(div0, input);
+    			set_input_value(input, /*name*/ ctx[0]);
     			append_dev(div2, t0);
     			append_dev(div2, div1);
     			append_dev(div1, button);
@@ -35089,12 +35103,38 @@ var app = (function () {
     			append_dev(button, i);
     			append_dev(i, svg);
     			append_dev(svg, path);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[2]),
+    					listen_dev(
+    						button,
+    						"click",
+    						function () {
+    							if (is_function(/*create*/ ctx[1]())) /*create*/ ctx[1]().apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false
+    					)
+    				];
+
+    				mounted = true;
+    			}
     		},
-    		p: noop,
+    		p: function update(new_ctx, [dirty]) {
+    			ctx = new_ctx;
+
+    			if (dirty & /*name*/ 1 && input.value !== /*name*/ ctx[0]) {
+    				set_input_value(input, /*name*/ ctx[0]);
+    			}
+    		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
+    			mounted = false;
+    			run_all(dispose);
     		}
     	};
 
@@ -35109,22 +35149,52 @@ var app = (function () {
     	return block;
     }
 
-    function instance$2($$self, $$props) {
+    function instance$2($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Input', slots, []);
-    	const writable_props = [];
+    	let { name = '' } = $$props;
+    	let { create } = $$props;
+
+    	$$self.$$.on_mount.push(function () {
+    		if (create === undefined && !('create' in $$props || $$self.$$.bound[$$self.$$.props['create']])) {
+    			console.warn("<Input> was created without expected prop 'create'");
+    		}
+    	});
+
+    	const writable_props = ['name', 'create'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Input> was created with unknown prop '${key}'`);
     	});
 
-    	return [];
+    	function input_input_handler() {
+    		name = this.value;
+    		$$invalidate(0, name);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('name' in $$props) $$invalidate(0, name = $$props.name);
+    		if ('create' in $$props) $$invalidate(1, create = $$props.create);
+    	};
+
+    	$$self.$capture_state = () => ({ name, create });
+
+    	$$self.$inject_state = $$props => {
+    		if ('name' in $$props) $$invalidate(0, name = $$props.name);
+    		if ('create' in $$props) $$invalidate(1, create = $$props.create);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [name, create, input_input_handler];
     }
 
     class Input extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, {});
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { name: 0, create: 1 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -35133,13 +35203,29 @@ var app = (function () {
     			id: create_fragment$2.name
     		});
     	}
+
+    	get name() {
+    		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set name(value) {
+    		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get create() {
+    		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set create(value) {
+    		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     /* src/pages/Entry.svelte generated by Svelte v3.55.1 */
     const file$1 = "src/pages/Entry.svelte";
 
     function create_fragment$1(ctx) {
-    	let div2;
+    	let div3;
     	let div1;
     	let img;
     	let img_src_value;
@@ -35149,13 +35235,32 @@ var app = (function () {
     	let t2;
     	let h4;
     	let t4;
+    	let div2;
+    	let p;
+    	let t5;
+    	let t6;
+    	let t7;
+    	let t8;
     	let input;
+    	let updating_name;
     	let current;
-    	input = new Input({ $$inline: true });
+
+    	function input_name_binding(value) {
+    		/*input_name_binding*/ ctx[2](value);
+    	}
+
+    	let input_props = { create: /*create*/ ctx[1] };
+
+    	if (/*name*/ ctx[0] !== void 0) {
+    		input_props.name = /*name*/ ctx[0];
+    	}
+
+    	input = new Input({ props: input_props, $$inline: true });
+    	binding_callbacks.push(() => bind(input, 'name', input_name_binding));
 
     	const block = {
     		c: function create() {
-    			div2 = element("div");
+    			div3 = element("div");
     			div1 = element("div");
     			img = element("img");
     			t0 = space();
@@ -35166,36 +35271,62 @@ var app = (function () {
     			h4 = element("h4");
     			h4.textContent = "Check urself before you wreck urself in those FAANG interviews";
     			t4 = space();
+    			div2 = element("div");
+    			p = element("p");
+    			t5 = text$2("Hello \"");
+    			t6 = text$2(/*name*/ ctx[0]);
+    			t7 = text$2("\"!");
+    			t8 = space();
     			create_component(input.$$.fragment);
     			if (!src_url_equal(img.src, img_src_value = "./github.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "class", "svelte-5ziyg9");
-    			add_location(img, file$1, 8, 8, 112);
+    			add_location(img, file$1, 11, 8, 155);
     			attr_dev(h1, "class", "svelte-5ziyg9");
-    			add_location(h1, file$1, 10, 12, 163);
+    			add_location(h1, file$1, 13, 12, 206);
     			attr_dev(h4, "class", "svelte-5ziyg9");
-    			add_location(h4, file$1, 11, 12, 216);
-    			add_location(div0, file$1, 9, 8, 145);
-    			add_location(div1, file$1, 7, 4, 98);
-    			attr_dev(div2, "class", "entry svelte-5ziyg9");
-    			add_location(div2, file$1, 6, 0, 74);
+    			add_location(h4, file$1, 14, 12, 259);
+    			add_location(div0, file$1, 12, 8, 188);
+    			add_location(div1, file$1, 10, 4, 141);
+    			add_location(p, file$1, 18, 8, 375);
+    			add_location(div2, file$1, 17, 4, 361);
+    			attr_dev(div3, "class", "entry svelte-5ziyg9");
+    			add_location(div3, file$1, 9, 0, 117);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, div1);
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div1);
     			append_dev(div1, img);
     			append_dev(div1, t0);
     			append_dev(div1, div0);
     			append_dev(div0, h1);
     			append_dev(div0, t2);
     			append_dev(div0, h4);
-    			append_dev(div2, t4);
+    			append_dev(div3, t4);
+    			append_dev(div3, div2);
+    			append_dev(div2, p);
+    			append_dev(p, t5);
+    			append_dev(p, t6);
+    			append_dev(p, t7);
+    			append_dev(div2, t8);
     			mount_component(input, div2, null);
     			current = true;
     		},
-    		p: noop,
+    		p: function update(ctx, [dirty]) {
+    			if (!current || dirty & /*name*/ 1) set_data_dev(t6, /*name*/ ctx[0]);
+    			const input_changes = {};
+    			if (dirty & /*create*/ 2) input_changes.create = /*create*/ ctx[1];
+
+    			if (!updating_name && dirty & /*name*/ 1) {
+    				updating_name = true;
+    				input_changes.name = /*name*/ ctx[0];
+    				add_flush_callback(() => updating_name = false);
+    			}
+
+    			input.$set(input_changes);
+    		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(input.$$.fragment, local);
@@ -35206,7 +35337,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(div3);
     			destroy_component(input);
     		}
     	};
@@ -35225,20 +35356,53 @@ var app = (function () {
     function instance$1($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Entry', slots, []);
-    	const writable_props = [];
+    	let { name } = $$props;
+    	let { create } = $$props;
+
+    	$$self.$$.on_mount.push(function () {
+    		if (name === undefined && !('name' in $$props || $$self.$$.bound[$$self.$$.props['name']])) {
+    			console.warn("<Entry> was created without expected prop 'name'");
+    		}
+
+    		if (create === undefined && !('create' in $$props || $$self.$$.bound[$$self.$$.props['create']])) {
+    			console.warn("<Entry> was created without expected prop 'create'");
+    		}
+    	});
+
+    	const writable_props = ['name', 'create'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Entry> was created with unknown prop '${key}'`);
     	});
 
-    	$$self.$capture_state = () => ({ Input });
-    	return [];
+    	function input_name_binding(value) {
+    		name = value;
+    		$$invalidate(0, name);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('name' in $$props) $$invalidate(0, name = $$props.name);
+    		if ('create' in $$props) $$invalidate(1, create = $$props.create);
+    	};
+
+    	$$self.$capture_state = () => ({ Input, name, create });
+
+    	$$self.$inject_state = $$props => {
+    		if ('name' in $$props) $$invalidate(0, name = $$props.name);
+    		if ('create' in $$props) $$invalidate(1, create = $$props.create);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [name, create, input_name_binding];
     }
 
     class Entry extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {});
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { name: 0, create: 1 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -35246,6 +35410,22 @@ var app = (function () {
     			options,
     			id: create_fragment$1.name
     		});
+    	}
+
+    	get name() {
+    		throw new Error("<Entry>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set name(value) {
+    		throw new Error("<Entry>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get create() {
+    		throw new Error("<Entry>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set create(value) {
+    		throw new Error("<Entry>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
@@ -35257,33 +35437,36 @@ var app = (function () {
     function create_fragment(ctx) {
     	let main;
     	let entry;
+    	let updating_name;
     	let t0;
-    	let p;
-    	let t1;
-    	let t2_value = (/*name*/ ctx[0] || "stranger") + "";
-    	let t2;
-    	let t3;
-    	let t4;
-    	let input;
-    	let t5;
     	let div2;
     	let div1;
     	let img;
     	let img_src_value;
-    	let t6;
+    	let t1;
     	let div0;
     	let h2;
-    	let t7;
-    	let t8;
+    	let t2;
+    	let t3;
     	let contributions_1;
-    	let t9;
+    	let t4;
     	let repos;
-    	let t10;
+    	let t5;
     	let languages_1;
     	let current;
-    	let mounted;
-    	let dispose;
-    	entry = new Entry({ $$inline: true });
+
+    	function entry_name_binding(value) {
+    		/*entry_name_binding*/ ctx[7](value);
+    	}
+
+    	let entry_props = { create: /*createCV*/ ctx[6] };
+
+    	if (/*name*/ ctx[0] !== void 0) {
+    		entry_props.name = /*name*/ ctx[0];
+    	}
+
+    	entry = new Entry({ props: entry_props, $$inline: true });
+    	binding_callbacks.push(() => bind(entry, 'name', entry_name_binding));
 
     	contributions_1 = new Contributions({
     			props: {
@@ -35307,43 +35490,33 @@ var app = (function () {
     			main = element("main");
     			create_component(entry.$$.fragment);
     			t0 = space();
-    			p = element("p");
-    			t1 = text$2("Hello ");
-    			t2 = text$2(t2_value);
-    			t3 = text$2("!");
-    			t4 = space();
-    			input = element("input");
-    			t5 = space();
     			div2 = element("div");
     			div1 = element("div");
     			img = element("img");
-    			t6 = space();
+    			t1 = space();
     			div0 = element("div");
     			h2 = element("h2");
-    			t7 = text$2(/*username*/ ctx[2]);
-    			t8 = space();
+    			t2 = text$2(/*username*/ ctx[2]);
+    			t3 = space();
     			create_component(contributions_1.$$.fragment);
-    			t9 = space();
+    			t4 = space();
     			create_component(repos.$$.fragment);
-    			t10 = space();
+    			t5 = space();
     			create_component(languages_1.$$.fragment);
-    			add_location(p, file, 131, 1, 4709);
-    			attr_dev(input, "placeholder", "enter your name");
-    			add_location(input, file, 132, 1, 4745);
     			if (!src_url_equal(img.src, img_src_value = /*src*/ ctx[1])) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "profile");
     			attr_dev(img, "class", "profile svelte-93b0g0");
-    			add_location(img, file, 139, 3, 4893);
+    			add_location(img, file, 133, 3, 4802);
     			attr_dev(h2, "class", "svelte-93b0g0");
-    			add_location(h2, file, 141, 4, 4982);
+    			add_location(h2, file, 135, 4, 4891);
     			attr_dev(div0, "class", "contributions_container svelte-93b0g0");
-    			add_location(div0, file, 140, 3, 4940);
+    			add_location(div0, file, 134, 3, 4849);
     			attr_dev(div1, "class", "profile_container svelte-93b0g0");
-    			add_location(div1, file, 138, 2, 4858);
+    			add_location(div1, file, 132, 2, 4767);
     			attr_dev(div2, "class", "container svelte-93b0g0");
-    			add_location(div2, file, 137, 1, 4832);
+    			add_location(div2, file, 131, 1, 4741);
     			attr_dev(main, "class", "svelte-93b0g0");
-    			add_location(main, file, 129, 0, 4690);
+    			add_location(main, file, 129, 0, 4685);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -35352,50 +35525,37 @@ var app = (function () {
     			insert_dev(target, main, anchor);
     			mount_component(entry, main, null);
     			append_dev(main, t0);
-    			append_dev(main, p);
-    			append_dev(p, t1);
-    			append_dev(p, t2);
-    			append_dev(p, t3);
-    			append_dev(main, t4);
-    			append_dev(main, input);
-    			set_input_value(input, /*name*/ ctx[0]);
-    			append_dev(main, t5);
     			append_dev(main, div2);
     			append_dev(div2, div1);
     			append_dev(div1, img);
-    			append_dev(div1, t6);
+    			append_dev(div1, t1);
     			append_dev(div1, div0);
     			append_dev(div0, h2);
-    			append_dev(h2, t7);
-    			append_dev(div0, t8);
+    			append_dev(h2, t2);
+    			append_dev(div0, t3);
     			mount_component(contributions_1, div0, null);
-    			append_dev(div2, t9);
+    			append_dev(div2, t4);
     			mount_component(repos, div2, null);
-    			append_dev(div2, t10);
+    			append_dev(div2, t5);
     			mount_component(languages_1, div2, null);
     			current = true;
-
-    			if (!mounted) {
-    				dispose = [
-    					listen_dev(input, "change", /*createCV*/ ctx[6], false, false, false),
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[7])
-    				];
-
-    				mounted = true;
-    			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if ((!current || dirty & /*name*/ 1) && t2_value !== (t2_value = (/*name*/ ctx[0] || "stranger") + "")) set_data_dev(t2, t2_value);
+    			const entry_changes = {};
 
-    			if (dirty & /*name*/ 1 && input.value !== /*name*/ ctx[0]) {
-    				set_input_value(input, /*name*/ ctx[0]);
+    			if (!updating_name && dirty & /*name*/ 1) {
+    				updating_name = true;
+    				entry_changes.name = /*name*/ ctx[0];
+    				add_flush_callback(() => updating_name = false);
     			}
+
+    			entry.$set(entry_changes);
 
     			if (!current || dirty & /*src*/ 2 && !src_url_equal(img.src, img_src_value = /*src*/ ctx[1])) {
     				attr_dev(img, "src", img_src_value);
     			}
 
-    			if (!current || dirty & /*username*/ 4) set_data_dev(t7, /*username*/ ctx[2]);
+    			if (!current || dirty & /*username*/ 4) set_data_dev(t2, /*username*/ ctx[2]);
     			const contributions_1_changes = {};
     			if (dirty & /*contributions*/ 8) contributions_1_changes.contribution_list = /*contributions*/ ctx[3];
     			contributions_1.$set(contributions_1_changes);
@@ -35427,8 +35587,6 @@ var app = (function () {
     			destroy_component(contributions_1);
     			destroy_component(repos);
     			destroy_component(languages_1);
-    			mounted = false;
-    			run_all(dispose);
     		}
     	};
 
@@ -35446,7 +35604,7 @@ var app = (function () {
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
-    	let name = "arditxhaferi";
+    	let name = "stanger";
     	let src = "favicon.png";
     	let username = "John Doe";
     	let contributions = [];
@@ -35554,8 +35712,8 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	function input_input_handler() {
-    		name = this.value;
+    	function entry_name_binding(value) {
+    		name = value;
     		$$invalidate(0, name);
     	}
 
@@ -35605,7 +35763,7 @@ var app = (function () {
     		repos_sorted,
     		languages,
     		createCV,
-    		input_input_handler
+    		entry_name_binding
     	];
     }
 

@@ -2,6 +2,9 @@
 
     import Input from "../components/Input.svelte";
 
+    export let name
+    export let create
+
 </script>
 
 <div class="entry">
@@ -12,7 +15,10 @@
             <h4>Check urself before you wreck urself in those FAANG interviews</h4>
         </div>
     </div>
-    <Input />
+    <div>
+        <p>Hello "{name}"!</p>
+        <Input bind:name="{name}" create={create} />
+    </div>
 </div>
 
 <style>
