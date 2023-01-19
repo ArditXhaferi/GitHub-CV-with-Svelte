@@ -35238,9 +35238,12 @@ var app = (function () {
     	let div2;
     	let p;
     	let t5;
+    	let span;
     	let t6;
     	let t7;
     	let t8;
+    	let t9;
+    	let t10;
     	let input;
     	let updating_name;
     	let current;
@@ -35273,23 +35276,29 @@ var app = (function () {
     			t4 = space();
     			div2 = element("div");
     			p = element("p");
-    			t5 = text$2("Hello \"");
-    			t6 = text$2(/*name*/ ctx[0]);
-    			t7 = text$2("\"!");
-    			t8 = space();
+    			t5 = text$2("Hello ");
+    			span = element("span");
+    			t6 = text$2("\"");
+    			t7 = text$2(/*name*/ ctx[0]);
+    			t8 = text$2("\"");
+    			t9 = text$2(" !");
+    			t10 = space();
     			create_component(input.$$.fragment);
     			if (!src_url_equal(img.src, img_src_value = "./github.png")) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "class", "svelte-5ziyg9");
+    			attr_dev(img, "class", "svelte-luokq9");
     			add_location(img, file$1, 11, 8, 155);
-    			attr_dev(h1, "class", "svelte-5ziyg9");
+    			attr_dev(h1, "class", "svelte-luokq9");
     			add_location(h1, file$1, 13, 12, 206);
-    			attr_dev(h4, "class", "svelte-5ziyg9");
+    			attr_dev(h4, "class", "svelte-luokq9");
     			add_location(h4, file$1, 14, 12, 259);
     			add_location(div0, file$1, 12, 8, 188);
     			add_location(div1, file$1, 10, 4, 141);
+    			attr_dev(span, "class", "i svelte-luokq9");
+    			add_location(span, file$1, 18, 17, 384);
+    			attr_dev(p, "class", "svelte-luokq9");
     			add_location(p, file$1, 18, 8, 375);
     			add_location(div2, file$1, 17, 4, 361);
-    			attr_dev(div3, "class", "entry svelte-5ziyg9");
+    			attr_dev(div3, "class", "entry svelte-luokq9");
     			add_location(div3, file$1, 9, 0, 117);
     		},
     		l: function claim(nodes) {
@@ -35308,14 +35317,17 @@ var app = (function () {
     			append_dev(div3, div2);
     			append_dev(div2, p);
     			append_dev(p, t5);
-    			append_dev(p, t6);
-    			append_dev(p, t7);
-    			append_dev(div2, t8);
+    			append_dev(p, span);
+    			append_dev(span, t6);
+    			append_dev(span, t7);
+    			append_dev(span, t8);
+    			append_dev(p, t9);
+    			append_dev(div2, t10);
     			mount_component(input, div2, null);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			if (!current || dirty & /*name*/ 1) set_data_dev(t6, /*name*/ ctx[0]);
+    			if (!current || dirty & /*name*/ 1) set_data_dev(t7, /*name*/ ctx[0]);
     			const input_changes = {};
     			if (dirty & /*create*/ 2) input_changes.create = /*create*/ ctx[1];
 

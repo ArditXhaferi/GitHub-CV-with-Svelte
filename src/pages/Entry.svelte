@@ -16,7 +16,7 @@
         </div>
     </div>
     <div>
-        <p>Hello "{name}"!</p>
+        <p>Hello <span class="i">"{name}"</span> !</p>
         <Input bind:name="{name}" create={create} />
     </div>
 </div>
@@ -45,5 +45,13 @@
     .entry img{
         width: 100px;
         height: auto;
+    }
+
+    .entry p{
+        font-size: 18px;
+    }
+    .i{
+        font-style: italic;
+        font-weight: 700;
     }
 </style>
