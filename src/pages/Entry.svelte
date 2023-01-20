@@ -4,10 +4,11 @@
 
     export let name
     export let create
+    export let className
 
 </script>
 
-<div class="entry">
+<div class="entry {className}">
     <div>
         <img src="./github.png">
         <div>
@@ -16,7 +17,7 @@
         </div>
     </div>
     <div>
-        <p>Hello <span class="i">"{name}"</span> !</p>
+        <p>Hello <span class="i">"{name || "stranger"}"</span> !</p>
         <Input bind:name="{name}" create={create} />
     </div>
 </div>
@@ -30,9 +31,9 @@
         font-size: 18px;
     }
     .entry {
+        transition: all 1s cubic-bezier(0.39, 0.575, 0.565, 1);
         text-align: center;
         display: flex;
-        height: 100%;
         flex-direction: column;
         color: black;
         background-color: white;
@@ -54,4 +55,9 @@
         font-style: italic;
         font-weight: 700;
     }
+
+    .fade-out{
+        transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
+		transform: translateX(-200%);
+	}
 </style>

@@ -1,5 +1,6 @@
-import cheerio from '../node_modules/cheerio';
-import _ from '../node_modules/lodash';
+const cheerio = require("cheerio")
+const _ = require("lodash")
+
 
 
 const COLOR_MAP = {
@@ -11,7 +12,7 @@ const COLOR_MAP = {
 };
 
 async function fetchYears(username) {
-  const data = await fetch(`https://github.com/${username}`);
+  const data = await fetch(`https://cors-anywhere.herokuapp.com/https://github.com/${username}`);
   const $ = cheerio.load(await data.text());
   return $(".js-year-link")
     .get()
@@ -78,7 +79,7 @@ async function fetchDataForYear(url, year, format) {
   };
 }
 
-export async function fetchDataForAllYears(username, format) {
+module.exports = async function fetchDataForAllYears(username, format) {
   const years = await fetchYears(username);
   return Promise.all(
     years.map((year) => fetchDataForYear(year.href, year.text, format))

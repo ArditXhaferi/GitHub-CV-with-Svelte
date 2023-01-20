@@ -1,10 +1,10 @@
 <script>
 	import Contributions from "./components/Contributions.svelte";
 	import Repos from "./components/Repos.svelte";
-	import { fetchDataForAllYears } from "../scripts/fetch";
     import Languages from "./components/Languages.svelte";
     import Entry from "./pages/Entry.svelte";
-	let name = "stanger";
+	let name = "";
+	let entry_style = "";
 	let src = "favicon.png";
 	let username = "John Doe";
 	let contributions = [];
@@ -83,15 +83,15 @@
 	}
 
 	const handleContributions = async () => {
-		let allContributions = await fetchDataForAllYears(name, "nested");
-		const d = new Date();
-		let year = d.getFullYear();
-		let month = d.getMonth();
-		contributions = Object.values(
-			Object.values(
-				allContributions["contributions"]["contributions"][year]
-			)[month]
-		);
+		fetch("http://localhost:3000/" + name)
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data);
+					entry_style = "fade-out";
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 	};
 
 	const handleLanguages = async () =>{
@@ -128,8 +128,8 @@
 </script>
 
 <main>
-	<Entry bind:name="{name}" create={createCV} />
-	<div class="container">
+	<Entry className="{entry_style}" bind:name="{name}" create={createCV} />
+	<div class="container {entry_style}">
 		<div class="profile_container">
 			<img {src} alt="profile" class="profile" />
 			<div class="contributions_container">
@@ -149,7 +149,7 @@
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
-		overflow-y: scroll;
+		overflow: hidden;
 		padding: 50px;
 		background-image: url("/pattern1.svg");
 		background-size: 200px;
@@ -177,7 +177,14 @@
 		padding: 25px;
 		display: flex;
 		flex-direction: column;
-		display: none;
+		transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
+		transform: translateX(300%);
+		position: absolute;
+	}
+
+	.fade-out{
+		transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
+		transform: translateX(0%);
 	}
 
 	.profile {
