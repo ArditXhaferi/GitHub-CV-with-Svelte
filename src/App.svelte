@@ -130,6 +130,7 @@
 <main>
 	<Entry className="{entry_style}" bind:name="{name}" create={createCV} />
 	<div class="container {entry_style}">
+		<img src="./icons.png" class="icons" alt="Icons" width="35">
 		<div class="profile_container">
 			<img {src} alt="profile" class="profile" />
 			<div class="contributions_container">
@@ -155,6 +156,12 @@
 		background-size: 200px;
 	}
 
+	.icons{
+		position: absolute;
+		left: 12px;
+		top: -17px;
+	}
+
 	.profile_container {
 		display: flex;
 		color: white;
@@ -167,19 +174,19 @@
 	}
 
 	.container {
+		border-top: 25px solid #423d38;
 		min-width: 400px;
 		max-width: 400px;
-		min-height: 500px;
-		max-height: 500px;
-		background-color: #22272d;
+		background-color: #1f1e1e;
 		color: white;
-		border-radius: 40px;
-		padding: 25px;
+		border-radius: 16px;
+        padding: 40px 40px;
 		display: flex;
 		flex-direction: column;
 		transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
 		transform: translateX(300%);
 		position: absolute;
+		padding-top: 30px;
 	}
 
 	.fade-out{

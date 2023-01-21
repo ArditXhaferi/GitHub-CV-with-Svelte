@@ -1624,18 +1624,21 @@ var app = (function () {
     	let updating_name;
     	let t0;
     	let div2;
-    	let div1;
-    	let img;
-    	let img_src_value;
+    	let img0;
+    	let img0_src_value;
     	let t1;
+    	let div1;
+    	let img1;
+    	let img1_src_value;
+    	let t2;
     	let div0;
     	let h2;
-    	let t2;
     	let t3;
-    	let contributions_1;
     	let t4;
-    	let repos;
+    	let contributions_1;
     	let t5;
+    	let repos;
+    	let t6;
     	let languages_1;
     	let div2_class_value;
     	let current;
@@ -1679,31 +1682,38 @@ var app = (function () {
     			create_component(entry.$$.fragment);
     			t0 = space();
     			div2 = element("div");
-    			div1 = element("div");
-    			img = element("img");
+    			img0 = element("img");
     			t1 = space();
+    			div1 = element("div");
+    			img1 = element("img");
+    			t2 = space();
     			div0 = element("div");
     			h2 = element("h2");
-    			t2 = text(/*username*/ ctx[3]);
-    			t3 = space();
-    			create_component(contributions_1.$$.fragment);
+    			t3 = text(/*username*/ ctx[3]);
     			t4 = space();
-    			create_component(repos.$$.fragment);
+    			create_component(contributions_1.$$.fragment);
     			t5 = space();
+    			create_component(repos.$$.fragment);
+    			t6 = space();
     			create_component(languages_1.$$.fragment);
-    			if (!src_url_equal(img.src, img_src_value = /*src*/ ctx[2])) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "alt", "profile");
-    			attr_dev(img, "class", "profile svelte-ckrlap");
-    			add_location(img, file, 133, 3, 4743);
-    			attr_dev(h2, "class", "svelte-ckrlap");
-    			add_location(h2, file, 135, 4, 4832);
-    			attr_dev(div0, "class", "contributions_container svelte-ckrlap");
-    			add_location(div0, file, 134, 3, 4790);
-    			attr_dev(div1, "class", "profile_container svelte-ckrlap");
-    			add_location(div1, file, 132, 2, 4708);
-    			attr_dev(div2, "class", div2_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-ckrlap");
+    			if (!src_url_equal(img0.src, img0_src_value = "./icons.png")) attr_dev(img0, "src", img0_src_value);
+    			attr_dev(img0, "class", "icons svelte-gn6kyh");
+    			attr_dev(img0, "alt", "Icons");
+    			attr_dev(img0, "width", "35");
+    			add_location(img0, file, 132, 2, 4708);
+    			if (!src_url_equal(img1.src, img1_src_value = /*src*/ ctx[2])) attr_dev(img1, "src", img1_src_value);
+    			attr_dev(img1, "alt", "profile");
+    			attr_dev(img1, "class", "profile svelte-gn6kyh");
+    			add_location(img1, file, 134, 3, 4806);
+    			attr_dev(h2, "class", "svelte-gn6kyh");
+    			add_location(h2, file, 136, 4, 4895);
+    			attr_dev(div0, "class", "contributions_container svelte-gn6kyh");
+    			add_location(div0, file, 135, 3, 4853);
+    			attr_dev(div1, "class", "profile_container svelte-gn6kyh");
+    			add_location(div1, file, 133, 2, 4771);
+    			attr_dev(div2, "class", div2_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-gn6kyh");
     			add_location(div2, file, 131, 1, 4668);
-    			attr_dev(main, "class", "svelte-ckrlap");
+    			attr_dev(main, "class", "svelte-gn6kyh");
     			add_location(main, file, 129, 0, 4586);
     		},
     		l: function claim(nodes) {
@@ -1714,17 +1724,19 @@ var app = (function () {
     			mount_component(entry, main, null);
     			append_dev(main, t0);
     			append_dev(main, div2);
+    			append_dev(div2, img0);
+    			append_dev(div2, t1);
     			append_dev(div2, div1);
-    			append_dev(div1, img);
-    			append_dev(div1, t1);
+    			append_dev(div1, img1);
+    			append_dev(div1, t2);
     			append_dev(div1, div0);
     			append_dev(div0, h2);
-    			append_dev(h2, t2);
-    			append_dev(div0, t3);
+    			append_dev(h2, t3);
+    			append_dev(div0, t4);
     			mount_component(contributions_1, div0, null);
-    			append_dev(div2, t4);
-    			mount_component(repos, div2, null);
     			append_dev(div2, t5);
+    			mount_component(repos, div2, null);
+    			append_dev(div2, t6);
     			mount_component(languages_1, div2, null);
     			current = true;
     		},
@@ -1740,11 +1752,11 @@ var app = (function () {
 
     			entry.$set(entry_changes);
 
-    			if (!current || dirty & /*src*/ 4 && !src_url_equal(img.src, img_src_value = /*src*/ ctx[2])) {
-    				attr_dev(img, "src", img_src_value);
+    			if (!current || dirty & /*src*/ 4 && !src_url_equal(img1.src, img1_src_value = /*src*/ ctx[2])) {
+    				attr_dev(img1, "src", img1_src_value);
     			}
 
-    			if (!current || dirty & /*username*/ 8) set_data_dev(t2, /*username*/ ctx[3]);
+    			if (!current || dirty & /*username*/ 8) set_data_dev(t3, /*username*/ ctx[3]);
     			const repos_changes = {};
     			if (dirty & /*repos_sorted*/ 16) repos_changes.repos_list = /*repos_sorted*/ ctx[4];
     			repos.$set(repos_changes);
@@ -1752,7 +1764,7 @@ var app = (function () {
     			if (dirty & /*languages*/ 32) languages_1_changes.languages = /*languages*/ ctx[5];
     			languages_1.$set(languages_1_changes);
 
-    			if (!current || dirty & /*entry_style*/ 2 && div2_class_value !== (div2_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-ckrlap")) {
+    			if (!current || dirty & /*entry_style*/ 2 && div2_class_value !== (div2_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-gn6kyh")) {
     				attr_dev(div2, "class", div2_class_value);
     			}
     		},
