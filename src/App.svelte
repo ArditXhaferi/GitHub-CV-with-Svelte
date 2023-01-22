@@ -3,6 +3,8 @@
 	import Repos from "./components/Repos.svelte";
     import Languages from "./components/Languages.svelte";
     import Entry from "./pages/Entry.svelte";
+	import Typewriter from 'typewriter-effect/dist/core';
+
 	let name = "";
 	let entry_style = "";
 	let src = "favicon.png";
@@ -12,6 +14,7 @@
 	let languages_list = {};
 	let languages = [];
 	let sorted_languages = {};
+	let repos;
 
 	let jokes = {
 		JavaScript:
@@ -65,11 +68,11 @@
 	const createCV = async () => {
 		handleProfile()
 		handleContributions()
-		handleLanguages()
+		// handleLanguages()
 	};
 
 	const handleProfile = async () => {
-		let repos = await githubRequest(
+		repos = await githubRequest(
 			`https://api.github.com/users/$name$/repos?per_page=100`,
 			name
 		);
@@ -78,8 +81,49 @@
 			return b.stargazers_count - a.stargazers_count;
 		}).slice(0, 3);
 
-		src = repos[0]["owner"]["avatar_url"];
-		username = repos[0]["owner"]["login"];
+		if(repos.length != 0){
+			src = repos[0]["owner"]["avatar_url"];
+			username = repos[0]["owner"]["login"];
+		}
+
+
+		typeProfile()
+	}
+
+	const typeProfile = () => {
+		let app = document.getElementById('type');
+
+		let typewriter = new Typewriter(app, {
+			delay: 75,
+		});
+
+		console.log(reposAmountText())
+
+		typewriter
+			.pauseFor(2000)
+			.typeString('Hello fuckface')
+			.pauseFor(100)
+			.deleteAll()
+			.typeString(`I mean hello ${name}, let's see if you actualy #code haha.`)
+			.pauseFor(500)
+			.typeString('<br><br> ' + reposAmountText())
+			.start();
+	}
+
+	const reposAmountText = () => {
+		let hcolor = "a699bc"
+		switch(true){
+			case repos.length == 0:
+				return `wow you have <b style='color: #${hcolor};'> 0 public repos </b> you either hate open source or ur my mom checking out this project I shared (hi mom)`
+			case repos.length > 0 && repos.length < 10:
+				return `cool you have <b style='color: #${hcolor};'> ${repos.length} repositories </b> really that's all? bump that up to atleast second digits. disgraceful.`
+			case repos.length > 9 && repos.length < 50:
+				return `Wow in the second digits impressive, you have <b style='color: #${hcolor};'> ${repos.length} public repositories. </b> Though I wonder what kind of person needs that many projects to hide their insecurities and inadequacies.`
+			case repos.length > 49 && repos.length < 100:
+				return `It's clear that you've put in some work with over 50 public repos, it's quite a number huh <b style='color: #${hcolor};'> (to be exact ${repos.length})</b>, but this is not enough, you need to keep pushing, don't be satisfied with mediocrity.`
+			case repos.length > 99:
+				return `You have an impressive number of <b style='color: #${hcolor};'>${repos.length} public repositories </b> in the hundreds, but I can't help but wonder if it's a way to compensate for something deeper and more profound that's missing in your life.`
+		}
 	}
 
 	const handleContributions = async () => {
@@ -103,7 +147,7 @@
 		top_repos = top_repos.sort(function(a, b) {
 			return b.stargazers_count - a.stargazers_count;
 		}).slice(0, 3);
-		console.log(top_repos)
+
 		for (const repo of top_repos){
 
 			let languages = await githubRequest(
@@ -130,16 +174,20 @@
 <main>
 	<Entry className="{entry_style}" bind:name="{name}" create={createCV} />
 	<div class="container {entry_style}">
-		<img src="./icons.png" class="icons" alt="Icons" width="35">
-		<div class="profile_container">
-			<img {src} alt="profile" class="profile" />
-			<div class="contributions_container">
-				<h2>{username}</h2>
-				<Contributions contribution_list={contributions} />
-			</div>
+		<div id="type">
 		</div>
-		<Repos repos_list={repos_sorted}/>
-		<Languages languages={languages} />
+		<img src="./icons.png" class="icons" alt="Icons" width="35">
+		<div class="export">
+			<div class="profile_container">
+				<img {src} alt="profile" class="profile" />
+				<div class="contributions_container">
+					<h2>{username}</h2>
+					<Contributions contribution_list={contributions} />
+				</div>
+			</div>
+			<Repos repos_list={repos_sorted}/>
+			<Languages languages={languages} />
+		</div>
 	</div>
 </main>
 
@@ -202,5 +250,9 @@
 
 	.contributions_container {
 		margin-left: 24px;
+	}
+
+	.export{
+		display: none;
 	}
 </style>

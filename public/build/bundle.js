@@ -1613,6 +1613,23 @@ var app = (function () {
     	}
     }
 
+    var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+    function getDefaultExportFromCjs (x) {
+    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+    }
+
+    function createCommonjsModule(fn) {
+      var module = { exports: {} };
+    	return fn(module, module.exports), module.exports;
+    }
+
+    var core = createCommonjsModule(function (module, exports) {
+    !function(e,t){module.exports=t();}("undefined"!=typeof self?self:commonjsGlobal,(()=>(()=>{var e={75:function(e){(function(){var t,n,r,o,a,s;"undefined"!=typeof performance&&null!==performance&&performance.now?e.exports=function(){return performance.now()}:"undefined"!=typeof process&&null!==process&&process.hrtime?(e.exports=function(){return (t()-a)/1e6},n=process.hrtime,o=(t=function(){var e;return 1e9*(e=n())[0]+e[1]})(),s=1e9*process.uptime(),a=o-s):Date.now?(e.exports=function(){return Date.now()-r},r=Date.now()):(e.exports=function(){return (new Date).getTime()-r},r=(new Date).getTime());}).call(this);},4087:(e,t,n)=>{for(var r=n(75),o="undefined"==typeof window?n.g:window,a=["moz","webkit"],s="AnimationFrame",i=o["request"+s],u=o["cancel"+s]||o["cancelRequest"+s],l=0;!i&&l<a.length;l++)i=o[a[l]+"Request"+s],u=o[a[l]+"Cancel"+s]||o[a[l]+"CancelRequest"+s];if(!i||!u){var c=0,p=0,d=[];i=function(e){if(0===d.length){var t=r(),n=Math.max(0,16.666666666666668-(t-c));c=n+t,setTimeout((function(){var e=d.slice(0);d.length=0;for(var t=0;t<e.length;t++)if(!e[t].cancelled)try{e[t].callback(c);}catch(e){setTimeout((function(){throw e}),0);}}),Math.round(n));}return d.push({handle:++p,callback:e,cancelled:!1}),p},u=function(e){for(var t=0;t<d.length;t++)d[t].handle===e&&(d[t].cancelled=!0);};}e.exports=function(e){return i.call(o,e)},e.exports.cancel=function(){u.apply(o,arguments);},e.exports.polyfill=function(e){e||(e=o),e.requestAnimationFrame=i,e.cancelAnimationFrame=u;};}},t={};function n(r){var o=t[r];if(void 0!==o)return o.exports;var a=t[r]={exports:{}};return e[r].call(a.exports,a,a.exports,n),a.exports}n.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return n.d(t,{a:t}),t},n.d=(e,t)=>{for(var r in t)n.o(t,r)&&!n.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]});},n.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),n.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var r={};return (()=>{n.d(r,{default:()=>S});var e=n(4087),t=n.n(e);const o=function(e){return new RegExp(/<[a-z][\s\S]*>/i).test(e)},a=function(e){var t=document.createElement("div");return t.innerHTML=e,t.childNodes},s=function(e,t){return Math.floor(Math.random()*(t-e+1))+e};var i="TYPE_CHARACTER",u="REMOVE_CHARACTER",l="REMOVE_ALL",c="REMOVE_LAST_VISIBLE_NODE",p="PAUSE_FOR",d="CALL_FUNCTION",f="ADD_HTML_TAG_ELEMENT",v="CHANGE_DELETE_SPEED",h="CHANGE_DELAY",m="CHANGE_CURSOR",y="PASTE_STRING",g="HTML_TAG";function E(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),n.push.apply(n,r);}return n}function w(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{};t%2?E(Object(n),!0).forEach((function(t){N(e,t,n[t]);})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):E(Object(n)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(n,t));}));}return e}function T(e){return function(e){if(Array.isArray(e))return b(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||function(e,t){if(e){if("string"==typeof e)return b(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);return "Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?b(e,t):void 0}}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function b(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}function A(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r);}}function N(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}const S=function(){function n(r,E){var b=this;if(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,n),N(this,"state",{cursorAnimation:null,lastFrameTime:null,pauseUntil:null,eventQueue:[],eventLoop:null,eventLoopPaused:!1,reverseCalledEvents:[],calledEvents:[],visibleNodes:[],initialOptions:null,elements:{container:null,wrapper:document.createElement("span"),cursor:document.createElement("span")}}),N(this,"options",{strings:null,cursor:"|",delay:"natural",pauseFor:1500,deleteSpeed:"natural",loop:!1,autoStart:!1,devMode:!1,skipAddStyles:!1,wrapperClassName:"Typewriter__wrapper",cursorClassName:"Typewriter__cursor",stringSplitter:null,onCreateTextNode:null,onRemoveNode:null}),N(this,"setupWrapperElement",(function(){b.state.elements.container&&(b.state.elements.wrapper.className=b.options.wrapperClassName,b.state.elements.cursor.className=b.options.cursorClassName,b.state.elements.cursor.innerHTML=b.options.cursor,b.state.elements.container.innerHTML="",b.state.elements.container.appendChild(b.state.elements.wrapper),b.state.elements.container.appendChild(b.state.elements.cursor));})),N(this,"start",(function(){return b.state.eventLoopPaused=!1,b.runEventLoop(),b})),N(this,"pause",(function(){return b.state.eventLoopPaused=!0,b})),N(this,"stop",(function(){return b.state.eventLoop&&((0, e.cancel)(b.state.eventLoop),b.state.eventLoop=null),b})),N(this,"pauseFor",(function(e){return b.addEventToQueue(p,{ms:e}),b})),N(this,"typeOutAllStrings",(function(){return "string"==typeof b.options.strings?(b.typeString(b.options.strings).pauseFor(b.options.pauseFor),b):(b.options.strings.forEach((function(e){b.typeString(e).pauseFor(b.options.pauseFor).deleteAll(b.options.deleteSpeed);})),b)})),N(this,"typeString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(o(e))return b.typeOutHTMLString(e,t);if(e){var n=b.options||{},r=n.stringSplitter,a="function"==typeof r?r(e):e.split("");b.typeCharacters(a,t);}return b})),N(this,"pasteString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return o(e)?b.typeOutHTMLString(e,t,!0):(e&&b.addEventToQueue(y,{character:e,node:t}),b)})),N(this,"typeOutHTMLString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,n=arguments.length>2?arguments[2]:void 0,r=a(e);if(r.length>0)for(var o=0;o<r.length;o++){var s=r[o],i=s.innerHTML;s&&3!==s.nodeType?(s.innerHTML="",b.addEventToQueue(f,{node:s,parentNode:t}),n?b.pasteString(i,s):b.typeString(i,s)):s.textContent&&(n?b.pasteString(s.textContent,t):b.typeString(s.textContent,t));}return b})),N(this,"deleteAll",(function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"natural";return b.addEventToQueue(l,{speed:e}),b})),N(this,"changeDeleteSpeed",(function(e){if(!e)throw new Error("Must provide new delete speed");return b.addEventToQueue(v,{speed:e}),b})),N(this,"changeDelay",(function(e){if(!e)throw new Error("Must provide new delay");return b.addEventToQueue(h,{delay:e}),b})),N(this,"changeCursor",(function(e){if(!e)throw new Error("Must provide new cursor");return b.addEventToQueue(m,{cursor:e}),b})),N(this,"deleteChars",(function(e){if(!e)throw new Error("Must provide amount of characters to delete");for(var t=0;t<e;t++)b.addEventToQueue(u);return b})),N(this,"callFunction",(function(e,t){if(!e||"function"!=typeof e)throw new Error("Callbak must be a function");return b.addEventToQueue(d,{cb:e,thisArg:t}),b})),N(this,"typeCharacters",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(!e||!Array.isArray(e))throw new Error("Characters must be an array");return e.forEach((function(e){b.addEventToQueue(i,{character:e,node:t});})),b})),N(this,"removeCharacters",(function(e){if(!e||!Array.isArray(e))throw new Error("Characters must be an array");return e.forEach((function(){b.addEventToQueue(u);})),b})),N(this,"addEventToQueue",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2];return b.addEventToStateProperty(e,t,n,"eventQueue")})),N(this,"addReverseCalledEvent",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=b.options.loop;return r?b.addEventToStateProperty(e,t,n,"reverseCalledEvents"):b})),N(this,"addEventToStateProperty",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=arguments.length>3?arguments[3]:void 0,o={eventName:e,eventArgs:t||{}};return b.state[r]=n?[o].concat(T(b.state[r])):[].concat(T(b.state[r]),[o]),b})),N(this,"runEventLoop",(function(){b.state.lastFrameTime||(b.state.lastFrameTime=Date.now());var e=Date.now(),n=e-b.state.lastFrameTime;if(!b.state.eventQueue.length){if(!b.options.loop)return;b.state.eventQueue=T(b.state.calledEvents),b.state.calledEvents=[],b.options=w({},b.state.initialOptions);}if(b.state.eventLoop=t()(b.runEventLoop),!b.state.eventLoopPaused){if(b.state.pauseUntil){if(e<b.state.pauseUntil)return;b.state.pauseUntil=null;}var r,o=T(b.state.eventQueue),a=o.shift();if(!(n<=(r=a.eventName===c||a.eventName===u?"natural"===b.options.deleteSpeed?s(40,80):b.options.deleteSpeed:"natural"===b.options.delay?s(120,160):b.options.delay))){var E=a.eventName,A=a.eventArgs;switch(b.logInDevMode({currentEvent:a,state:b.state,delay:r}),E){case y:case i:var N=A.character,S=A.node,C=document.createTextNode(N),_=C;b.options.onCreateTextNode&&"function"==typeof b.options.onCreateTextNode&&(_=b.options.onCreateTextNode(N,C)),_&&(S?S.appendChild(_):b.state.elements.wrapper.appendChild(_)),b.state.visibleNodes=[].concat(T(b.state.visibleNodes),[{type:"TEXT_NODE",character:N,node:_}]);break;case u:o.unshift({eventName:c,eventArgs:{removingCharacterNode:!0}});break;case p:var O=a.eventArgs.ms;b.state.pauseUntil=Date.now()+parseInt(O);break;case d:var L=a.eventArgs,D=L.cb,M=L.thisArg;D.call(M,{elements:b.state.elements});break;case f:var x=a.eventArgs,P=x.node,j=x.parentNode;j?j.appendChild(P):b.state.elements.wrapper.appendChild(P),b.state.visibleNodes=[].concat(T(b.state.visibleNodes),[{type:g,node:P,parentNode:j||b.state.elements.wrapper}]);break;case l:var R=b.state.visibleNodes,k=A.speed,Q=[];k&&Q.push({eventName:v,eventArgs:{speed:k,temp:!0}});for(var F=0,H=R.length;F<H;F++)Q.push({eventName:c,eventArgs:{removingCharacterNode:!1}});k&&Q.push({eventName:v,eventArgs:{speed:b.options.deleteSpeed,temp:!0}}),o.unshift.apply(o,Q);break;case c:var I=a.eventArgs.removingCharacterNode;if(b.state.visibleNodes.length){var U=b.state.visibleNodes.pop(),q=U.type,G=U.node,Y=U.character;b.options.onRemoveNode&&"function"==typeof b.options.onRemoveNode&&b.options.onRemoveNode({node:G,character:Y}),G&&G.parentNode.removeChild(G),q===g&&I&&o.unshift({eventName:c,eventArgs:{}});}break;case v:b.options.deleteSpeed=a.eventArgs.speed;break;case h:b.options.delay=a.eventArgs.delay;break;case m:b.options.cursor=a.eventArgs.cursor,b.state.elements.cursor.innerHTML=a.eventArgs.cursor;}b.options.loop&&(a.eventName===c||a.eventArgs&&a.eventArgs.temp||(b.state.calledEvents=[].concat(T(b.state.calledEvents),[a]))),b.state.eventQueue=o,b.state.lastFrameTime=e;}}})),r)if("string"==typeof r){var A=document.querySelector(r);if(!A)throw new Error("Could not find container element");this.state.elements.container=A;}else this.state.elements.container=r;E&&(this.options=w(w({},this.options),E)),this.state.initialOptions=w({},this.options),this.init();}var r,E;return r=n,(E=[{key:"init",value:function(){var e,t;this.setupWrapperElement(),this.addEventToQueue(m,{cursor:this.options.cursor},!0),this.addEventToQueue(l,null,!0),!window||window.___TYPEWRITER_JS_STYLES_ADDED___||this.options.skipAddStyles||(e=".Typewriter__cursor{-webkit-animation:Typewriter-cursor 1s infinite;animation:Typewriter-cursor 1s infinite;margin-left:1px}@-webkit-keyframes Typewriter-cursor{0%{opacity:0}50%{opacity:1}100%{opacity:0}}@keyframes Typewriter-cursor{0%{opacity:0}50%{opacity:1}100%{opacity:0}}",(t=document.createElement("style")).appendChild(document.createTextNode(e)),document.head.appendChild(t),window.___TYPEWRITER_JS_STYLES_ADDED___=!0),!0===this.options.autoStart&&this.options.strings&&this.typeOutAllStrings().start();}},{key:"logInDevMode",value:function(e){this.options.devMode&&console.log(e);}}])&&A(r.prototype,E),Object.defineProperty(r,"prototype",{writable:!1}),n}();})(),r.default})()));
+    });
+
+    var Typewriter = /*@__PURE__*/getDefaultExportFromCjs(core);
+
     /* src/App.svelte generated by Svelte v3.55.1 */
 
     const { Object: Object_1, console: console_1 } = globals;
@@ -1623,24 +1640,27 @@ var app = (function () {
     	let entry;
     	let updating_name;
     	let t0;
-    	let div2;
+    	let div4;
+    	let div0;
+    	let t1;
     	let img0;
     	let img0_src_value;
-    	let t1;
-    	let div1;
+    	let t2;
+    	let div3;
+    	let div2;
     	let img1;
     	let img1_src_value;
-    	let t2;
-    	let div0;
-    	let h2;
     	let t3;
+    	let div1;
+    	let h2;
     	let t4;
-    	let contributions_1;
     	let t5;
-    	let repos;
+    	let contributions_1;
     	let t6;
+    	let repos_1;
+    	let t7;
     	let languages_1;
-    	let div2_class_value;
+    	let div4_class_value;
     	let current;
 
     	function entry_name_binding(value) {
@@ -1666,7 +1686,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	repos = new Repos({
+    	repos_1 = new Repos({
     			props: { repos_list: /*repos_sorted*/ ctx[4] },
     			$$inline: true
     		});
@@ -1681,40 +1701,47 @@ var app = (function () {
     			main = element("main");
     			create_component(entry.$$.fragment);
     			t0 = space();
-    			div2 = element("div");
-    			img0 = element("img");
-    			t1 = space();
-    			div1 = element("div");
-    			img1 = element("img");
-    			t2 = space();
+    			div4 = element("div");
     			div0 = element("div");
+    			t1 = space();
+    			img0 = element("img");
+    			t2 = space();
+    			div3 = element("div");
+    			div2 = element("div");
+    			img1 = element("img");
+    			t3 = space();
+    			div1 = element("div");
     			h2 = element("h2");
-    			t3 = text(/*username*/ ctx[3]);
-    			t4 = space();
-    			create_component(contributions_1.$$.fragment);
+    			t4 = text(/*username*/ ctx[3]);
     			t5 = space();
-    			create_component(repos.$$.fragment);
+    			create_component(contributions_1.$$.fragment);
     			t6 = space();
+    			create_component(repos_1.$$.fragment);
+    			t7 = space();
     			create_component(languages_1.$$.fragment);
+    			attr_dev(div0, "id", "type");
+    			add_location(div0, file, 176, 2, 6585);
     			if (!src_url_equal(img0.src, img0_src_value = "./icons.png")) attr_dev(img0, "src", img0_src_value);
-    			attr_dev(img0, "class", "icons svelte-gn6kyh");
+    			attr_dev(img0, "class", "icons svelte-xzvqe8");
     			attr_dev(img0, "alt", "Icons");
     			attr_dev(img0, "width", "35");
-    			add_location(img0, file, 132, 2, 4708);
+    			add_location(img0, file, 178, 2, 6612);
     			if (!src_url_equal(img1.src, img1_src_value = /*src*/ ctx[2])) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "profile");
-    			attr_dev(img1, "class", "profile svelte-gn6kyh");
-    			add_location(img1, file, 134, 3, 4806);
-    			attr_dev(h2, "class", "svelte-gn6kyh");
-    			add_location(h2, file, 136, 4, 4895);
-    			attr_dev(div0, "class", "contributions_container svelte-gn6kyh");
-    			add_location(div0, file, 135, 3, 4853);
-    			attr_dev(div1, "class", "profile_container svelte-gn6kyh");
-    			add_location(div1, file, 133, 2, 4771);
-    			attr_dev(div2, "class", div2_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-gn6kyh");
-    			add_location(div2, file, 131, 1, 4668);
-    			attr_dev(main, "class", "svelte-gn6kyh");
-    			add_location(main, file, 129, 0, 4586);
+    			attr_dev(img1, "class", "profile svelte-xzvqe8");
+    			add_location(img1, file, 181, 4, 6735);
+    			attr_dev(h2, "class", "svelte-xzvqe8");
+    			add_location(h2, file, 183, 5, 6826);
+    			attr_dev(div1, "class", "contributions_container svelte-xzvqe8");
+    			add_location(div1, file, 182, 4, 6783);
+    			attr_dev(div2, "class", "profile_container svelte-xzvqe8");
+    			add_location(div2, file, 180, 3, 6699);
+    			attr_dev(div3, "class", "export svelte-xzvqe8");
+    			add_location(div3, file, 179, 2, 6675);
+    			attr_dev(div4, "class", div4_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-xzvqe8");
+    			add_location(div4, file, 175, 1, 6545);
+    			attr_dev(main, "class", "svelte-xzvqe8");
+    			add_location(main, file, 173, 0, 6463);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1723,21 +1750,24 @@ var app = (function () {
     			insert_dev(target, main, anchor);
     			mount_component(entry, main, null);
     			append_dev(main, t0);
-    			append_dev(main, div2);
-    			append_dev(div2, img0);
-    			append_dev(div2, t1);
+    			append_dev(main, div4);
+    			append_dev(div4, div0);
+    			append_dev(div4, t1);
+    			append_dev(div4, img0);
+    			append_dev(div4, t2);
+    			append_dev(div4, div3);
+    			append_dev(div3, div2);
+    			append_dev(div2, img1);
+    			append_dev(div2, t3);
     			append_dev(div2, div1);
-    			append_dev(div1, img1);
-    			append_dev(div1, t2);
-    			append_dev(div1, div0);
-    			append_dev(div0, h2);
-    			append_dev(h2, t3);
-    			append_dev(div0, t4);
-    			mount_component(contributions_1, div0, null);
-    			append_dev(div2, t5);
-    			mount_component(repos, div2, null);
-    			append_dev(div2, t6);
-    			mount_component(languages_1, div2, null);
+    			append_dev(div1, h2);
+    			append_dev(h2, t4);
+    			append_dev(div1, t5);
+    			mount_component(contributions_1, div1, null);
+    			append_dev(div3, t6);
+    			mount_component(repos_1, div3, null);
+    			append_dev(div3, t7);
+    			mount_component(languages_1, div3, null);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
@@ -1756,30 +1786,30 @@ var app = (function () {
     				attr_dev(img1, "src", img1_src_value);
     			}
 
-    			if (!current || dirty & /*username*/ 8) set_data_dev(t3, /*username*/ ctx[3]);
-    			const repos_changes = {};
-    			if (dirty & /*repos_sorted*/ 16) repos_changes.repos_list = /*repos_sorted*/ ctx[4];
-    			repos.$set(repos_changes);
+    			if (!current || dirty & /*username*/ 8) set_data_dev(t4, /*username*/ ctx[3]);
+    			const repos_1_changes = {};
+    			if (dirty & /*repos_sorted*/ 16) repos_1_changes.repos_list = /*repos_sorted*/ ctx[4];
+    			repos_1.$set(repos_1_changes);
     			const languages_1_changes = {};
     			if (dirty & /*languages*/ 32) languages_1_changes.languages = /*languages*/ ctx[5];
     			languages_1.$set(languages_1_changes);
 
-    			if (!current || dirty & /*entry_style*/ 2 && div2_class_value !== (div2_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-gn6kyh")) {
-    				attr_dev(div2, "class", div2_class_value);
+    			if (!current || dirty & /*entry_style*/ 2 && div4_class_value !== (div4_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-xzvqe8")) {
+    				attr_dev(div4, "class", div4_class_value);
     			}
     		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(entry.$$.fragment, local);
     			transition_in(contributions_1.$$.fragment, local);
-    			transition_in(repos.$$.fragment, local);
+    			transition_in(repos_1.$$.fragment, local);
     			transition_in(languages_1.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(entry.$$.fragment, local);
     			transition_out(contributions_1.$$.fragment, local);
-    			transition_out(repos.$$.fragment, local);
+    			transition_out(repos_1.$$.fragment, local);
     			transition_out(languages_1.$$.fragment, local);
     			current = false;
     		},
@@ -1787,7 +1817,7 @@ var app = (function () {
     			if (detaching) detach_dev(main);
     			destroy_component(entry);
     			destroy_component(contributions_1);
-    			destroy_component(repos);
+    			destroy_component(repos_1);
     			destroy_component(languages_1);
     		}
     	};
@@ -1815,6 +1845,7 @@ var app = (function () {
     	let languages_list = {};
     	let languages = [];
     	let sorted_languages = {};
+    	let repos;
 
     	let jokes = {
     		JavaScript: "Why was the JavaScript developer sad? Because they didn't know how to 'null' their feelings.",
@@ -1861,18 +1892,45 @@ var app = (function () {
     	const createCV = async () => {
     		handleProfile();
     		handleContributions();
-    		handleLanguages();
-    	};
+    	}; // handleLanguages()
 
     	const handleProfile = async () => {
-    		let repos = await githubRequest(`https://api.github.com/users/$name$/repos?per_page=100`, name);
+    		repos = await githubRequest(`https://api.github.com/users/$name$/repos?per_page=100`, name);
 
     		$$invalidate(4, repos_sorted = repos.sort(function (a, b) {
     			return b.stargazers_count - a.stargazers_count;
     		}).slice(0, 3));
 
-    		$$invalidate(2, src = repos[0]["owner"]["avatar_url"]);
-    		$$invalidate(3, username = repos[0]["owner"]["login"]);
+    		if (repos.length != 0) {
+    			$$invalidate(2, src = repos[0]["owner"]["avatar_url"]);
+    			$$invalidate(3, username = repos[0]["owner"]["login"]);
+    		}
+
+    		typeProfile();
+    	};
+
+    	const typeProfile = () => {
+    		let app = document.getElementById('type');
+    		let typewriter = new Typewriter(app, { delay: 75 });
+    		console.log(reposAmountText());
+    		typewriter.pauseFor(2000).typeString('Hello fuckface').pauseFor(100).deleteAll().typeString(`I mean hello ${name}, let's see if you actualy #code haha.`).pauseFor(500).typeString('<br><br> ' + reposAmountText()).start();
+    	};
+
+    	const reposAmountText = () => {
+    		let hcolor = "a699bc";
+
+    		switch (true) {
+    			case repos.length == 0:
+    				return `wow you have <b style='color: #${hcolor};'> 0 public repos </b> you either hate open source or ur my mom checking out this project I shared (hi mom)`;
+    			case repos.length > 0 && repos.length < 10:
+    				return `cool you have <b style='color: #${hcolor};'> ${repos.length} repositories </b> really that's all? bump that up to atleast second digits. disgraceful.`;
+    			case repos.length > 9 && repos.length < 50:
+    				return `Wow in the second digits impressive, you have <b style='color: #${hcolor};'> ${repos.length} public repositories. </b> Though I wonder what kind of person needs that many projects to hide their insecurities and inadequacies.`;
+    			case repos.length > 49 && repos.length < 100:
+    				return `It's clear that you've put in some work with over 50 public repos, it's quite a number huh <b style='color: #${hcolor};'> (to be exact ${repos.length})</b>, but this is not enough, you need to keep pushing, don't be satisfied with mediocrity.`;
+    			case repos.length > 99:
+    				return `You have an impressive number of <b style='color: #${hcolor};'>${repos.length} public repositories </b> in the hundreds, but I can't help but wonder if it's a way to compensate for something deeper and more profound that's missing in your life.`;
+    		}
     	};
 
     	const handleContributions = async () => {
@@ -1890,8 +1948,6 @@ var app = (function () {
     		top_repos = top_repos.sort(function (a, b) {
     			return b.stargazers_count - a.stargazers_count;
     		}).slice(0, 3);
-
-    		console.log(top_repos);
 
     		for (const repo of top_repos) {
     			let languages = await githubRequest(`https://api.github.com/repos/$name$/` + repo.name + `/languages`, name);
@@ -1926,6 +1982,7 @@ var app = (function () {
     		Repos,
     		Languages,
     		Entry,
+    		Typewriter,
     		name,
     		entry_style,
     		src,
@@ -1935,10 +1992,13 @@ var app = (function () {
     		languages_list,
     		languages,
     		sorted_languages,
+    		repos,
     		jokes,
     		githubRequest,
     		createCV,
     		handleProfile,
+    		typeProfile,
+    		reposAmountText,
     		handleContributions,
     		handleLanguages
     	});
@@ -1953,6 +2013,7 @@ var app = (function () {
     		if ('languages_list' in $$props) languages_list = $$props.languages_list;
     		if ('languages' in $$props) $$invalidate(5, languages = $$props.languages);
     		if ('sorted_languages' in $$props) sorted_languages = $$props.sorted_languages;
+    		if ('repos' in $$props) repos = $$props.repos;
     		if ('jokes' in $$props) jokes = $$props.jokes;
     	};
 
