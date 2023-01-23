@@ -11,7 +11,16 @@ const githubRequest = (url, name) => {
     fetch(url.replace("$name$", name))
       .then((response) => response.json())
       .then((data) => {
-        resolve(data);
+        let MyDate = new Date();
+        let MyDateString;
+                
+        MyDateString = MyDate.getFullYear() + '-' + ('0' + (MyDate.getMonth() + 1)).slice(-2) + "-" + ('0' + MyDate.getDate()).slice(-2);
+        
+        data.contributions.forEach((contribution, index) => {
+          if(contribution.date == MyDateString){
+            resolve(data.contributions.slice(index, index + 30))
+          }
+        });
       })
       .catch((error) => {
         reject(error);

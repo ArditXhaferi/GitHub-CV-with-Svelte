@@ -98,6 +98,23 @@ var app = (function () {
     function set_current_component(component) {
         current_component = component;
     }
+    function get_current_component() {
+        if (!current_component)
+            throw new Error('Function called outside component initialization');
+        return current_component;
+    }
+    /**
+     * The `onMount` function schedules a callback to run as soon as the component has been mounted to the DOM.
+     * It must be called during the component's initialisation (but doesn't need to live *inside* the component;
+     * it can be called from an external module).
+     *
+     * `onMount` does not run inside a [server-side component](/docs#run-time-server-side-component-api).
+     *
+     * https://svelte.dev/docs#run-time-svelte-onmount
+     */
+    function onMount(fn) {
+        get_current_component().$$.on_mount.push(fn);
+    }
 
     const dirty_components = [];
     const binding_callbacks = [];
@@ -1664,12 +1681,12 @@ var app = (function () {
     	let current;
 
     	function entry_name_binding(value) {
-    		/*entry_name_binding*/ ctx[8](value);
+    		/*entry_name_binding*/ ctx[9](value);
     	}
 
     	let entry_props = {
     		className: /*entry_style*/ ctx[1],
-    		create: /*createCV*/ ctx[7]
+    		create: /*createCV*/ ctx[8]
     	};
 
     	if (/*name*/ ctx[0] !== void 0) {
@@ -1681,7 +1698,7 @@ var app = (function () {
 
     	contributions_1 = new Contributions({
     			props: {
-    				contribution_list: /*contributions*/ ctx[6]
+    				contribution_list: /*contributions*/ ctx[7]
     			},
     			$$inline: true
     		});
@@ -1719,29 +1736,28 @@ var app = (function () {
     			create_component(repos_1.$$.fragment);
     			t7 = space();
     			create_component(languages_1.$$.fragment);
-    			attr_dev(div0, "id", "type");
-    			add_location(div0, file, 176, 2, 6585);
+    			add_location(div0, file, 182, 2, 6701);
     			if (!src_url_equal(img0.src, img0_src_value = "./icons.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "class", "icons svelte-xzvqe8");
     			attr_dev(img0, "alt", "Icons");
     			attr_dev(img0, "width", "35");
-    			add_location(img0, file, 178, 2, 6612);
+    			add_location(img0, file, 184, 2, 6735);
     			if (!src_url_equal(img1.src, img1_src_value = /*src*/ ctx[2])) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "profile");
     			attr_dev(img1, "class", "profile svelte-xzvqe8");
-    			add_location(img1, file, 181, 4, 6735);
+    			add_location(img1, file, 187, 4, 6858);
     			attr_dev(h2, "class", "svelte-xzvqe8");
-    			add_location(h2, file, 183, 5, 6826);
+    			add_location(h2, file, 189, 5, 6949);
     			attr_dev(div1, "class", "contributions_container svelte-xzvqe8");
-    			add_location(div1, file, 182, 4, 6783);
+    			add_location(div1, file, 188, 4, 6906);
     			attr_dev(div2, "class", "profile_container svelte-xzvqe8");
-    			add_location(div2, file, 180, 3, 6699);
+    			add_location(div2, file, 186, 3, 6822);
     			attr_dev(div3, "class", "export svelte-xzvqe8");
-    			add_location(div3, file, 179, 2, 6675);
+    			add_location(div3, file, 185, 2, 6798);
     			attr_dev(div4, "class", div4_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-xzvqe8");
-    			add_location(div4, file, 175, 1, 6545);
+    			add_location(div4, file, 181, 1, 6661);
     			attr_dev(main, "class", "svelte-xzvqe8");
-    			add_location(main, file, 173, 0, 6463);
+    			add_location(main, file, 179, 0, 6579);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1752,6 +1768,7 @@ var app = (function () {
     			append_dev(main, t0);
     			append_dev(main, div4);
     			append_dev(div4, div0);
+    			/*div0_binding*/ ctx[10](div0);
     			append_dev(div4, t1);
     			append_dev(div4, img0);
     			append_dev(div4, t2);
@@ -1816,6 +1833,7 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(main);
     			destroy_component(entry);
+    			/*div0_binding*/ ctx[10](null);
     			destroy_component(contributions_1);
     			destroy_component(repos_1);
     			destroy_component(languages_1);
@@ -1846,6 +1864,14 @@ var app = (function () {
     	let languages = [];
     	let sorted_languages = {};
     	let repos;
+    	let hcolor = "a699bc";
+    	let type;
+    	let typewriter;
+
+    	onMount(async () => {
+    		typewriter = new Typewriter(type, { delay: 75 });
+    		console.log(typewriter, "test");
+    	});
 
     	let jokes = {
     		JavaScript: "Why was the JavaScript developer sad? Because they didn't know how to 'null' their feelings.",
@@ -1891,8 +1917,8 @@ var app = (function () {
 
     	const createCV = async () => {
     		handleProfile();
-    		handleContributions();
-    	}; // handleLanguages()
+    	}; // handleContributions()
+    	// handleLanguages()
 
     	const handleProfile = async () => {
     		repos = await githubRequest(`https://api.github.com/users/$name$/repos?per_page=100`, name);
@@ -1910,20 +1936,16 @@ var app = (function () {
     	};
 
     	const typeProfile = () => {
-    		let app = document.getElementById('type');
-    		let typewriter = new Typewriter(app, { delay: 75 });
-    		console.log(reposAmountText());
-    		typewriter.pauseFor(2000).typeString('Hello fuckface').pauseFor(100).deleteAll().typeString(`I mean hello ${name}, let's see if you actualy #code haha.`).pauseFor(500).typeString('<br><br> ' + reposAmountText()).start();
+    		$$invalidate(1, entry_style = "fade-out");
+    		typewriter.pauseFor(1500).typeString('Hello fuckface').pauseFor(100).deleteAll().typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`).pauseFor(500).typeString('<br><br> ' + reposAmountText()).pauseFor(500).deleteChars(100).start();
     	};
 
     	const reposAmountText = () => {
-    		let hcolor = "a699bc";
-
     		switch (true) {
     			case repos.length == 0:
     				return `wow you have <b style='color: #${hcolor};'> 0 public repos </b> you either hate open source or ur my mom checking out this project I shared (hi mom)`;
     			case repos.length > 0 && repos.length < 10:
-    				return `cool you have <b style='color: #${hcolor};'> ${repos.length} repositories </b> really that's all? bump that up to atleast second digits. disgraceful.`;
+    				return `cool you have <b style='color: #${hcolor};'> ${repos.length} repositories </b> really that's all? bump that up to atleast second digits. disgraceful`;
     			case repos.length > 9 && repos.length < 50:
     				return `Wow in the second digits impressive, you have <b style='color: #${hcolor};'> ${repos.length} public repositories. </b> Though I wonder what kind of person needs that many projects to hide their insecurities and inadequacies.`;
     			case repos.length > 49 && repos.length < 100:
@@ -1936,7 +1958,6 @@ var app = (function () {
     	const handleContributions = async () => {
     		fetch("http://localhost:3000/" + name).then(response => response.json()).then(data => {
     			console.log(data);
-    			$$invalidate(1, entry_style = "fade-out");
     		}).catch(error => {
     			console.log(error);
     		});
@@ -1977,12 +1998,20 @@ var app = (function () {
     		$$invalidate(0, name);
     	}
 
+    	function div0_binding($$value) {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+    			type = $$value;
+    			$$invalidate(6, type);
+    		});
+    	}
+
     	$$self.$capture_state = () => ({
     		Contributions,
     		Repos,
     		Languages,
     		Entry,
     		Typewriter,
+    		onMount,
     		name,
     		entry_style,
     		src,
@@ -1993,6 +2022,9 @@ var app = (function () {
     		languages,
     		sorted_languages,
     		repos,
+    		hcolor,
+    		type,
+    		typewriter,
     		jokes,
     		githubRequest,
     		createCV,
@@ -2008,12 +2040,15 @@ var app = (function () {
     		if ('entry_style' in $$props) $$invalidate(1, entry_style = $$props.entry_style);
     		if ('src' in $$props) $$invalidate(2, src = $$props.src);
     		if ('username' in $$props) $$invalidate(3, username = $$props.username);
-    		if ('contributions' in $$props) $$invalidate(6, contributions = $$props.contributions);
+    		if ('contributions' in $$props) $$invalidate(7, contributions = $$props.contributions);
     		if ('repos_sorted' in $$props) $$invalidate(4, repos_sorted = $$props.repos_sorted);
     		if ('languages_list' in $$props) languages_list = $$props.languages_list;
     		if ('languages' in $$props) $$invalidate(5, languages = $$props.languages);
     		if ('sorted_languages' in $$props) sorted_languages = $$props.sorted_languages;
     		if ('repos' in $$props) repos = $$props.repos;
+    		if ('hcolor' in $$props) hcolor = $$props.hcolor;
+    		if ('type' in $$props) $$invalidate(6, type = $$props.type);
+    		if ('typewriter' in $$props) typewriter = $$props.typewriter;
     		if ('jokes' in $$props) jokes = $$props.jokes;
     	};
 
@@ -2028,9 +2063,11 @@ var app = (function () {
     		username,
     		repos_sorted,
     		languages,
+    		type,
     		contributions,
     		createCV,
-    		entry_name_binding
+    		entry_name_binding,
+    		div0_binding
     	];
     }
 
