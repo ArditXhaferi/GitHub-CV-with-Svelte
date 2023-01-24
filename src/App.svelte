@@ -4,6 +4,7 @@
     import Languages from "./components/Languages.svelte";
     import Entry from "./pages/Entry.svelte";
 	import Typewriter from 'typewriter-effect/dist/core';
+	import { onMount } from 'svelte';
 
 	let name = "";
 	let entry_style = "";
@@ -15,6 +16,17 @@
 	let languages = [];
 	let sorted_languages = {};
 	let repos;
+	let hcolor = "a699bc";
+	let type;
+	let typewriter;
+
+	onMount(async () => {
+		typewriter = new Typewriter(type, {
+			delay: 75,
+		});
+		console.log(typewriter, "test")
+	});
+
 
 	let jokes = {
 		JavaScript:
@@ -67,7 +79,7 @@
 
 	const createCV = async () => {
 		handleProfile()
-		handleContributions()
+		// handleContributions()
 		// handleLanguages()
 	};
 
@@ -91,32 +103,27 @@
 	}
 
 	const typeProfile = () => {
-		let app = document.getElementById('type');
-
-		let typewriter = new Typewriter(app, {
-			delay: 75,
-		});
-
-		console.log(reposAmountText())
+		entry_style = "fade-out";
 
 		typewriter
-			.pauseFor(2000)
+			.pauseFor(1500)
 			.typeString('Hello fuckface')
 			.pauseFor(100)
 			.deleteAll()
-			.typeString(`I mean hello ${name}, let's see if you actualy #code haha.`)
+			.typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`)
 			.pauseFor(500)
 			.typeString('<br><br> ' + reposAmountText())
+			.pauseFor(500)
+			.deleteChars(100)
 			.start();
 	}
 
 	const reposAmountText = () => {
-		let hcolor = "a699bc"
 		switch(true){
 			case repos.length == 0:
 				return `wow you have <b style='color: #${hcolor};'> 0 public repos </b> you either hate open source or ur my mom checking out this project I shared (hi mom)`
 			case repos.length > 0 && repos.length < 10:
-				return `cool you have <b style='color: #${hcolor};'> ${repos.length} repositories </b> really that's all? bump that up to atleast second digits. disgraceful.`
+				return `cool you have <b style='color: #${hcolor};'> ${repos.length} repositories </b> really that's all? bump that up to atleast second digits. disgraceful`
 			case repos.length > 9 && repos.length < 50:
 				return `Wow in the second digits impressive, you have <b style='color: #${hcolor};'> ${repos.length} public repositories. </b> Though I wonder what kind of person needs that many projects to hide their insecurities and inadequacies.`
 			case repos.length > 49 && repos.length < 100:
@@ -131,7 +138,6 @@
 				.then((response) => response.json())
 				.then((data) => {
 					console.log(data);
-					entry_style = "fade-out";
 				})
 				.catch((error) => {
 					console.log(error);
@@ -174,7 +180,7 @@
 <main>
 	<Entry className="{entry_style}" bind:name="{name}" create={createCV} />
 	<div class="container {entry_style}">
-		<div id="type">
+		<div bind:this={type}>
 		</div>
 		<img src="./icons.png" class="icons" alt="Icons" width="35">
 		<div class="export">
