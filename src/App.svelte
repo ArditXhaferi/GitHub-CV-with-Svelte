@@ -79,7 +79,7 @@
 
 	const createCV = async () => {
 		handleProfile()
-		// handleContributions()
+		handleContributions()
 		// handleLanguages()
 	};
 
@@ -112,8 +112,8 @@
 			.deleteAll()
 			.typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`)
 			.pauseFor(500)
-			.typeString('<br><br> ' + reposAmountText())
-			.pauseFor(500)
+			.typeString('<br><br> ' + contributionsText())
+			.pauseFor(1000)
 			.deleteChars(100)
 			.start();
 	}
@@ -133,15 +133,35 @@
 		}
 	}
 
+	const contributionsText = async () => {
+		let latest_contributions = await githubRequest(
+			`http://localhost:3000/$name$`,
+			name
+		);
+
+		let streakOfnotPushing = 0;
+
+		latest_contributions.every(latest_contribution => {
+			if(latest_contribution.count != 0){
+				return false;
+			}
+
+			streakOfnotPushing++;
+			return true;
+		});
+
+		console.log(streakOfnotPushing)
+	}
+
 	const handleContributions = async () => {
 		fetch("http://localhost:3000/" + name)
-				.then((response) => response.json())
-				.then((data) => {
-					console.log(data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			.then((response) => response.json())
+			.then((data) => {
+				contributions = data;
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	const handleLanguages = async () =>{

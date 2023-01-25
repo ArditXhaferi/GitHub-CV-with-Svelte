@@ -1698,18 +1698,18 @@ var app = (function () {
 
     	contributions_1 = new Contributions({
     			props: {
-    				contribution_list: /*contributions*/ ctx[7]
+    				contribution_list: /*contributions*/ ctx[4]
     			},
     			$$inline: true
     		});
 
     	repos_1 = new Repos({
-    			props: { repos_list: /*repos_sorted*/ ctx[4] },
+    			props: { repos_list: /*repos_sorted*/ ctx[5] },
     			$$inline: true
     		});
 
     	languages_1 = new Languages({
-    			props: { languages: /*languages*/ ctx[5] },
+    			props: { languages: /*languages*/ ctx[6] },
     			$$inline: true
     		});
 
@@ -1736,28 +1736,28 @@ var app = (function () {
     			create_component(repos_1.$$.fragment);
     			t7 = space();
     			create_component(languages_1.$$.fragment);
-    			add_location(div0, file, 182, 2, 6701);
+    			add_location(div0, file, 202, 2, 7071);
     			if (!src_url_equal(img0.src, img0_src_value = "./icons.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "class", "icons svelte-xzvqe8");
     			attr_dev(img0, "alt", "Icons");
     			attr_dev(img0, "width", "35");
-    			add_location(img0, file, 184, 2, 6735);
+    			add_location(img0, file, 204, 2, 7105);
     			if (!src_url_equal(img1.src, img1_src_value = /*src*/ ctx[2])) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "profile");
     			attr_dev(img1, "class", "profile svelte-xzvqe8");
-    			add_location(img1, file, 187, 4, 6858);
+    			add_location(img1, file, 207, 4, 7228);
     			attr_dev(h2, "class", "svelte-xzvqe8");
-    			add_location(h2, file, 189, 5, 6949);
+    			add_location(h2, file, 209, 5, 7319);
     			attr_dev(div1, "class", "contributions_container svelte-xzvqe8");
-    			add_location(div1, file, 188, 4, 6906);
+    			add_location(div1, file, 208, 4, 7276);
     			attr_dev(div2, "class", "profile_container svelte-xzvqe8");
-    			add_location(div2, file, 186, 3, 6822);
+    			add_location(div2, file, 206, 3, 7192);
     			attr_dev(div3, "class", "export svelte-xzvqe8");
-    			add_location(div3, file, 185, 2, 6798);
+    			add_location(div3, file, 205, 2, 7168);
     			attr_dev(div4, "class", div4_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-xzvqe8");
-    			add_location(div4, file, 181, 1, 6661);
+    			add_location(div4, file, 201, 1, 7031);
     			attr_dev(main, "class", "svelte-xzvqe8");
-    			add_location(main, file, 179, 0, 6579);
+    			add_location(main, file, 199, 0, 6949);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1804,11 +1804,14 @@ var app = (function () {
     			}
 
     			if (!current || dirty & /*username*/ 8) set_data_dev(t4, /*username*/ ctx[3]);
+    			const contributions_1_changes = {};
+    			if (dirty & /*contributions*/ 16) contributions_1_changes.contribution_list = /*contributions*/ ctx[4];
+    			contributions_1.$set(contributions_1_changes);
     			const repos_1_changes = {};
-    			if (dirty & /*repos_sorted*/ 16) repos_1_changes.repos_list = /*repos_sorted*/ ctx[4];
+    			if (dirty & /*repos_sorted*/ 32) repos_1_changes.repos_list = /*repos_sorted*/ ctx[5];
     			repos_1.$set(repos_1_changes);
     			const languages_1_changes = {};
-    			if (dirty & /*languages*/ 32) languages_1_changes.languages = /*languages*/ ctx[5];
+    			if (dirty & /*languages*/ 64) languages_1_changes.languages = /*languages*/ ctx[6];
     			languages_1.$set(languages_1_changes);
 
     			if (!current || dirty & /*entry_style*/ 2 && div4_class_value !== (div4_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-xzvqe8")) {
@@ -1917,13 +1920,13 @@ var app = (function () {
 
     	const createCV = async () => {
     		handleProfile();
-    	}; // handleContributions()
-    	// handleLanguages()
+    		handleContributions();
+    	}; // handleLanguages()
 
     	const handleProfile = async () => {
     		repos = await githubRequest(`https://api.github.com/users/$name$/repos?per_page=100`, name);
 
-    		$$invalidate(4, repos_sorted = repos.sort(function (a, b) {
+    		$$invalidate(5, repos_sorted = repos.sort(function (a, b) {
     			return b.stargazers_count - a.stargazers_count;
     		}).slice(0, 3));
 
@@ -1937,7 +1940,7 @@ var app = (function () {
 
     	const typeProfile = () => {
     		$$invalidate(1, entry_style = "fade-out");
-    		typewriter.pauseFor(1500).typeString('Hello fuckface').pauseFor(100).deleteAll().typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`).pauseFor(500).typeString('<br><br> ' + reposAmountText()).pauseFor(500).deleteChars(100).start();
+    		typewriter.pauseFor(1500).typeString('Hello fuckface').pauseFor(100).deleteAll().typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`).pauseFor(500).typeString('<br><br> ' + contributionsText()).pauseFor(1000).deleteChars(100).start();
     	};
 
     	const reposAmountText = () => {
@@ -1955,9 +1958,25 @@ var app = (function () {
     		}
     	};
 
+    	const contributionsText = async () => {
+    		let latest_contributions = await githubRequest(`http://localhost:3000/$name$`, name);
+    		let streakOfnotPushing = 0;
+
+    		latest_contributions.every(latest_contribution => {
+    			if (latest_contribution.count != 0) {
+    				return false;
+    			}
+
+    			streakOfnotPushing++;
+    			return true;
+    		});
+
+    		console.log(streakOfnotPushing);
+    	};
+
     	const handleContributions = async () => {
     		fetch("http://localhost:3000/" + name).then(response => response.json()).then(data => {
-    			console.log(data);
+    			$$invalidate(4, contributions = data);
     		}).catch(error => {
     			console.log(error);
     		});
@@ -1982,7 +2001,7 @@ var app = (function () {
     			}
     		}
 
-    		$$invalidate(5, languages = Object.entries(languages_list).sort(function (a, b) {
+    		$$invalidate(6, languages = Object.entries(languages_list).sort(function (a, b) {
     			return b[1] - a[1];
     		}));
     	};
@@ -2001,7 +2020,7 @@ var app = (function () {
     	function div0_binding($$value) {
     		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
     			type = $$value;
-    			$$invalidate(6, type);
+    			$$invalidate(7, type);
     		});
     	}
 
@@ -2031,6 +2050,7 @@ var app = (function () {
     		handleProfile,
     		typeProfile,
     		reposAmountText,
+    		contributionsText,
     		handleContributions,
     		handleLanguages
     	});
@@ -2040,14 +2060,14 @@ var app = (function () {
     		if ('entry_style' in $$props) $$invalidate(1, entry_style = $$props.entry_style);
     		if ('src' in $$props) $$invalidate(2, src = $$props.src);
     		if ('username' in $$props) $$invalidate(3, username = $$props.username);
-    		if ('contributions' in $$props) $$invalidate(7, contributions = $$props.contributions);
-    		if ('repos_sorted' in $$props) $$invalidate(4, repos_sorted = $$props.repos_sorted);
+    		if ('contributions' in $$props) $$invalidate(4, contributions = $$props.contributions);
+    		if ('repos_sorted' in $$props) $$invalidate(5, repos_sorted = $$props.repos_sorted);
     		if ('languages_list' in $$props) languages_list = $$props.languages_list;
-    		if ('languages' in $$props) $$invalidate(5, languages = $$props.languages);
+    		if ('languages' in $$props) $$invalidate(6, languages = $$props.languages);
     		if ('sorted_languages' in $$props) sorted_languages = $$props.sorted_languages;
     		if ('repos' in $$props) repos = $$props.repos;
     		if ('hcolor' in $$props) hcolor = $$props.hcolor;
-    		if ('type' in $$props) $$invalidate(6, type = $$props.type);
+    		if ('type' in $$props) $$invalidate(7, type = $$props.type);
     		if ('typewriter' in $$props) typewriter = $$props.typewriter;
     		if ('jokes' in $$props) jokes = $$props.jokes;
     	};
@@ -2061,10 +2081,10 @@ var app = (function () {
     		entry_style,
     		src,
     		username,
+    		contributions,
     		repos_sorted,
     		languages,
     		type,
-    		contributions,
     		createCV,
     		entry_name_binding,
     		div0_binding
