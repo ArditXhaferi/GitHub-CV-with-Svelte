@@ -102,9 +102,11 @@
 		typeProfile()
 	}
 
-	const typeProfile = () => {
+	const typeProfile = async () => {
 		entry_style = "fade-out";
 
+		let contributions_text =  await contributionsText();
+		let repos_text = "<br><br>Let's check out now your fucking dumb open source projects that shouldn't even see the light of day <br><br>" + reposAmountText();
 		typewriter
 			.pauseFor(1500)
 			.typeString('Hello fuckface')
@@ -112,9 +114,10 @@
 			.deleteAll()
 			.typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`)
 			.pauseFor(500)
-			.typeString('<br><br> ' + contributionsText())
+			.typeString(repos_text)
+			.pauseFor(500)
+			.typeString(contributions_text)
 			.pauseFor(1000)
-			.deleteChars(100)
 			.start();
 	}
 
@@ -134,6 +137,8 @@
 	}
 
 	const contributionsText = async () => {
+		let textToReturn = "<br><br> Lets check out your latest contributions this month <br><br>";
+
 		let latest_contributions = await githubRequest(
 			`http://localhost:3000/$name$`,
 			name
@@ -150,7 +155,38 @@
 			return true;
 		});
 
-		console.log(streakOfnotPushing)
+		let amount = 0;
+
+		latest_contributions.forEach(latest_contribution => {
+			amount += latest_contribution.count
+		});
+
+		if(streakOfnotPushing == 0){
+			textToReturn += "Wow you pushed code today, okay you fucking nerd";
+		}
+		if(streakOfnotPushing == 1){
+			textToReturn += "Wow you pushed code yesterday, okay you fucking nerd";
+		}
+		if(streakOfnotPushing == 2){
+			textToReturn += "Hmm you didn't push code yesterday or the day before that, fucking fraud";
+		}
+		if(streakOfnotPushing > 2 && streakOfnotPushing < 10){
+			textToReturn += `${streakOfnotPushing} is the number of days you didn't push code, how are you able to look into your mother's eyes like this?`;
+		}
+		if(streakOfnotPushing > 9 && streakOfnotPushing < 25){
+			textToReturn += `It's been weeks since you didn't push code, fucking weeks (to be precise: ${streakOfnotPushing} days), get back into it you dumbfuck.`;
+		}
+		if(streakOfnotPushing > 24 && streakOfnotPushing != latest_contributions.length){
+			textToReturn += `Almost a fucking month without contributions, a whole ${streakOfnotPushing} days without pushing anything, why are you even on this app? just close it right now.`;
+		}
+		if(streakOfnotPushing == latest_contributions.length){
+			textToReturn += `A whole month doing jack shit, I'm just dissapointed in you. You had ${latest_contributions.length} days to push anything but yet you chose to do fuckall`
+		}
+		console.log(latest_contributions.length)
+
+		textToReturn += `<br><br> But besides that good job ${amount} contributions last month, amazing really.`;
+
+		return textToReturn
 	}
 
 	const handleContributions = async () => {

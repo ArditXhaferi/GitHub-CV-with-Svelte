@@ -1736,28 +1736,28 @@ var app = (function () {
     			create_component(repos_1.$$.fragment);
     			t7 = space();
     			create_component(languages_1.$$.fragment);
-    			add_location(div0, file, 202, 2, 7071);
+    			add_location(div0, file, 238, 2, 8937);
     			if (!src_url_equal(img0.src, img0_src_value = "./icons.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "class", "icons svelte-xzvqe8");
     			attr_dev(img0, "alt", "Icons");
     			attr_dev(img0, "width", "35");
-    			add_location(img0, file, 204, 2, 7105);
+    			add_location(img0, file, 240, 2, 8971);
     			if (!src_url_equal(img1.src, img1_src_value = /*src*/ ctx[2])) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "profile");
     			attr_dev(img1, "class", "profile svelte-xzvqe8");
-    			add_location(img1, file, 207, 4, 7228);
+    			add_location(img1, file, 243, 4, 9094);
     			attr_dev(h2, "class", "svelte-xzvqe8");
-    			add_location(h2, file, 209, 5, 7319);
+    			add_location(h2, file, 245, 5, 9185);
     			attr_dev(div1, "class", "contributions_container svelte-xzvqe8");
-    			add_location(div1, file, 208, 4, 7276);
+    			add_location(div1, file, 244, 4, 9142);
     			attr_dev(div2, "class", "profile_container svelte-xzvqe8");
-    			add_location(div2, file, 206, 3, 7192);
+    			add_location(div2, file, 242, 3, 9058);
     			attr_dev(div3, "class", "export svelte-xzvqe8");
-    			add_location(div3, file, 205, 2, 7168);
+    			add_location(div3, file, 241, 2, 9034);
     			attr_dev(div4, "class", div4_class_value = "container " + /*entry_style*/ ctx[1] + " svelte-xzvqe8");
-    			add_location(div4, file, 201, 1, 7031);
+    			add_location(div4, file, 237, 1, 8897);
     			attr_dev(main, "class", "svelte-xzvqe8");
-    			add_location(main, file, 199, 0, 6949);
+    			add_location(main, file, 235, 0, 8815);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1938,9 +1938,11 @@ var app = (function () {
     		typeProfile();
     	};
 
-    	const typeProfile = () => {
+    	const typeProfile = async () => {
     		$$invalidate(1, entry_style = "fade-out");
-    		typewriter.pauseFor(1500).typeString('Hello fuckface').pauseFor(100).deleteAll().typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`).pauseFor(500).typeString('<br><br> ' + contributionsText()).pauseFor(1000).deleteChars(100).start();
+    		let contributions_text = await contributionsText();
+    		let repos_text = "<br><br>Let's check out now your fucking dumb open source projects that shouldn't even see the light of day <br><br>" + reposAmountText();
+    		typewriter.pauseFor(1500).typeString('Hello fuckface').pauseFor(100).deleteAll().typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`).pauseFor(500).typeString(repos_text).pauseFor(500).typeString(contributions_text).pauseFor(1000).start();
     	};
 
     	const reposAmountText = () => {
@@ -1959,6 +1961,7 @@ var app = (function () {
     	};
 
     	const contributionsText = async () => {
+    		let textToReturn = "<br><br> Lets check out your latest contributions this month <br><br>";
     		let latest_contributions = await githubRequest(`http://localhost:3000/$name$`, name);
     		let streakOfnotPushing = 0;
 
@@ -1971,7 +1974,43 @@ var app = (function () {
     			return true;
     		});
 
-    		console.log(streakOfnotPushing);
+    		let amount = 0;
+
+    		latest_contributions.forEach(latest_contribution => {
+    			amount += latest_contribution.count;
+    		});
+
+    		if (streakOfnotPushing == 0) {
+    			textToReturn += "Wow you pushed code today, okay you fucking nerd";
+    		}
+
+    		if (streakOfnotPushing == 1) {
+    			textToReturn += "Wow you pushed code yesterday, okay you fucking nerd";
+    		}
+
+    		if (streakOfnotPushing == 2) {
+    			textToReturn += "Hmm you didn't push code yesterday or the day before that, fucking fraud";
+    		}
+
+    		if (streakOfnotPushing > 2 && streakOfnotPushing < 10) {
+    			textToReturn += `${streakOfnotPushing} is the number of days you didn't push code, how are you able to look into your mother's eyes like this?`;
+    		}
+
+    		if (streakOfnotPushing > 9 && streakOfnotPushing < 25) {
+    			textToReturn += `It's been weeks since you didn't push code, fucking weeks (to be precise: ${streakOfnotPushing} days), get back into it you dumbfuck.`;
+    		}
+
+    		if (streakOfnotPushing > 24 && streakOfnotPushing != latest_contributions.length) {
+    			textToReturn += `Almost a fucking month without contributions, a whole ${streakOfnotPushing} days without pushing anything, why are you even on this app? just close it right now.`;
+    		}
+
+    		if (streakOfnotPushing == latest_contributions.length) {
+    			textToReturn += `A whole month doing jack shit, I'm just dissapointed in you. You had ${latest_contributions.length} days to push anything but yet you chose to do fuckall`;
+    		}
+
+    		console.log(latest_contributions.length);
+    		textToReturn += `<br><br> But besides that good job ${amount} contributions last month, amazing really.`;
+    		return textToReturn;
     	};
 
     	const handleContributions = async () => {
