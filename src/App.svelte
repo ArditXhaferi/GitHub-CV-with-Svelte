@@ -285,7 +285,7 @@
 
 	.container {
 		border-top: 25px solid #423d38;
-		max-width: 70%;
+		width: 70%;
 		background-color: #1f1e1e;
 		color: white;
 		border-radius: 16px;
@@ -293,7 +293,7 @@
 		display: flex;
 		flex-direction: column;
 		transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
-		transform: translateX(300%);
+		transform: translateX(100vw);
 		position: absolute;
 		padding-top: 30px;
 	}
