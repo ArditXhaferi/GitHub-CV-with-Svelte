@@ -285,8 +285,7 @@
 
 	.container {
 		border-top: 25px solid #423d38;
-		min-width: 400px;
-		max-width: 400px;
+		max-width: 70%;
 		background-color: #1f1e1e;
 		color: white;
 		border-radius: 16px;
