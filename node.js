@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 const fetchDataForAllYears = require("./scripts/fetch")
 var cors = require('cors')
 
@@ -29,7 +29,6 @@ const githubRequest = (url, name) => {
 };
 
 app.get('/:name', async (req, res) => {
-
   let contributions = await githubRequest(
     `https://github-contributions.vercel.app/api/v1/$name$`,
     req.params.name

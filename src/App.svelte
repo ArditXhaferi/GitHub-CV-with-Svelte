@@ -137,7 +137,7 @@
 	}
 
 	const contributionsText = async () => {
-		let textToReturn = "<br><br> Lets check out your latest contributions this month <br><br>";
+		let textToReturn = "<br><br> Let's review your contributions for the last month. <br><br>";
 
 		let latest_contributions = await githubRequest(
 			`http://localhost:3000/$name$`,
