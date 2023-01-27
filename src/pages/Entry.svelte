@@ -10,7 +10,7 @@
 
 <div class="entry {className}">
     <div>
-        <img src="./github.png">
+        <img alt="github-icon" src="./github.png">
         <div>
             <h1>How Bad Is Your GitHub Profile?</h1>
             <h4>Check urself before you wreck urself in those FAANG interviews</h4>
