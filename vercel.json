@@ -5,8 +5,5 @@
             "src": "./node.js",
             "use": "@vercel/node"
         }
-    ],
-    "routes": [
-
     ]
   }
