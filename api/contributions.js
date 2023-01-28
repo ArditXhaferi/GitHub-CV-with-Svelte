@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/:username", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         let contributions = await githubRequest(
             `https://github-contributions.vercel.app/api/v1/$name$`,
-            req.params.username
+            req.query.username
         );
 
         res.json(contributions);
