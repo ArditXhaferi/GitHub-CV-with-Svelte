@@ -140,7 +140,7 @@
 		let textToReturn = "<br><br> Let's review your contributions for the last month. <br><br>";
 
 		let latest_contributions = await githubRequest(
-			`http://localhost:3000/$name$`,
+			`https://github-contributions-gold.vercel.app/api/contributions?username=$name$`,
 			name
 		);
 
