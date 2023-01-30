@@ -22,9 +22,8 @@
 
 	onMount(async () => {
 		typewriter = new Typewriter(type, {
-			delay: 75,
+			delay: 50,
 		});
-		console.log(typewriter, "test")
 	});
 
 
@@ -182,15 +181,14 @@
 		if(streakOfnotPushing == latest_contributions.length){
 			textToReturn += `A whole month doing jack shit, I'm just dissapointed in you. You had ${latest_contributions.length} days to push anything but yet you chose to do fuckall`
 		}
-		console.log(latest_contributions.length)
 
-		textToReturn += `<br><br> But besides that good job ${amount} contributions last month, amazing really.`;
+		textToReturn += `<br><br> But besides that good job for ${amount} contributions last month, amazing really.`;
 
 		return textToReturn
 	}
 
 	const handleContributions = async () => {
-		fetch("http://localhost:3000/" + name)
+		fetch("https://github-contributions-gold.vercel.app/api/contributions?username=" + name)
 			.then((response) => response.json())
 			.then((data) => {
 				contributions = data;
