@@ -105,7 +105,7 @@
 		entry_style = "fade-out";
 
 		let contributions_text =  await contributionsText();
-		let repos_text = "<br><br>Let's check out now your fucking dumb open source projects that shouldn't even see the light of day <br><br>" + reposAmountText();
+		let repos_text = "<br><br>Let's have a look at your fucking idiotic open source projects that shouldn't even exist.<br><br>" + reposAmountText();
 		typewriter
 			.pauseFor(1500)
 			.typeString('Hello fuckface')
@@ -283,7 +283,7 @@
 
 	.container {
 		border-top: 25px solid #423d38;
-		width: 70%;
+		width: 50%;
 		background-color: #1f1e1e;
 		color: white;
 		border-radius: 16px;
@@ -294,6 +294,12 @@
 		transform: translateX(100vw);
 		position: absolute;
 		padding-top: 30px;
+	}
+
+	@media only screen and (max-width: 768px) {
+		.container {
+			width: 70%;
+		}
 	}
 
 	.fade-out{

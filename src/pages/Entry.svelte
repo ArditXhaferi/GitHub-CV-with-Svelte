@@ -30,6 +30,7 @@
         font-weight: 400;
         font-size: 18px;
     }
+
     .entry {
         transition: all 1s cubic-bezier(0.39, 0.575, 0.565, 1);
         text-align: center;
@@ -42,6 +43,12 @@
         align-items: center;
         justify-content: space-between;
     }
+
+    @media only screen and (max-width: 768px) {
+		.entry {
+			width: 100%;
+		}
+	}
 
     .entry img{
         width: 100px;

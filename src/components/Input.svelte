@@ -3,7 +3,7 @@
     export let create;
 </script>
 
-<div class="inputWithButton">
+<form class="inputWithButton" on:submit|preventDefault={create()}>
     <div class="item">
         <input
             bind:value={name}
@@ -33,7 +33,7 @@
             </i>
         </button>
     </div>
-</div>
+</form>
 
 <style>
     .inputWithButton {
@@ -43,7 +43,8 @@
         border-radius: 5px;
         align-items: center;
         overflow: hidden;
-        width: 400px;
+        max-width: 400px;
+        width: 100%;
     }
     .searchInpt {
         height: 100%;
