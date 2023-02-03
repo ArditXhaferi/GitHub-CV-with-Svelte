@@ -47,6 +47,7 @@
     @media only screen and (max-width: 768px) {
 		.entry {
 			width: 100%;
+            padding: 16px;
 		}
 	}
 
@@ -64,6 +65,11 @@
     }
 
     .fade-out{
+        transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
+		transform: translateX(-200%);
+	}
+
+    .last-fade{
         transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
 		transform: translateX(-200%);
 	}

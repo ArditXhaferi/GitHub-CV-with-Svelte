@@ -5,6 +5,7 @@
     import Entry from "./pages/Entry.svelte";
 	import Typewriter from 'typewriter-effect/dist/core';
 	import { onMount } from 'svelte';
+	import html2canvas from 'html2canvas';
 
 	let name = "";
 	let entry_style = "";
@@ -19,48 +20,37 @@
 	let hcolor = "a699bc";
 	let type;
 	let typewriter;
+	let export_this;
 
 	onMount(async () => {
 		typewriter = new Typewriter(type, {
-			delay: 50,
+			delay: 1,
+			loop: false
 		});
 	});
 
 
 	let jokes = {
-		JavaScript:
+		javascript:
 			"Why was the JavaScript developer sad? Because they didn't know how to 'null' their feelings.",
-		Python: "What do you call a snake that works in a programming team? A Python developer.",
-		Java: "Why was the Java developer sad? They didn't have any closures.",
-		Ruby: "Why do Ruby developers wear glasses? Because they can't C#.",
-		PHP: "Why was the PHP developer sad? Because they didn't know what the 'else' statement was for.",
-		"C++": "Why do C++ developers wear glasses? Because they can't C#.",
-		"C#": "Why do C# developers wear glasses? Because they can't C#.",
-		TypeScript:
-			"Why was the TypeScript developer sad? Because they didn't know how to 'null' their feelings.",
-		Shell: "Why do Shell developers wear glasses? Because they can't C#.",
-		Go: "Why was the Go developer sad? They didn't have any closures.",
-		Swift: "Why do Swift developers wear glasses? Because they can't C#.",
-		Kotlin: "Why was the Kotlin developer sad? They didn't have any closures.",
-		Scala: "Why was the Scala developer sad? They didn't have any closures.",
-		CSS: "Why was the CSS developer sad? They didn't know how to 'null' their feelings.",
-		C: "Why do C developers wear glasses? Because they can't C#.",
-		"Objective-C":
+		python: "What do you call a snake that works in a programming team? A Python developer.",
+		java: "Why was the Java developer sad? They didn't have any closures.",
+		ruby: "What kind of girl would a Rails guy date? A fat model.",
+		php: "Why was the PHP developer sad? Because he was old as fuck.",
+		"c++": "Why do C++ developers wear glasses? Because they can't C#.",
+		"c#": "Why do C# developers wear glasses? Because they can't C#.",
+		typescript: "Your favorite technology is TypeScript, yet all this just to make 90% of your code to be any",
+		go: "Why was the Go developer sad? Because it has a ugly ass mascot.",
+		swift: "Why do Swift developer sad? Because they couldn't afford a M1 macbook.",
+		css: "Why was the CSS developer sad? Because it isn't even a fucking programming language.",
+		c: "Why do C developers wear glasses? Because they can't C#.",
+		"objective-c":
 			"Why do Objective-C developers wear glasses? Because they can't C#.",
-		Rust: "Why was the Rust developer sad? They didn't have any closures.",
-		Dart: "Why do Dart developers wear glasses? Because they can't C#.",
-		Elixir: "Why was the Elixir developer sad? They didn't have any closures.",
-		Perl: "Why was the Perl developer sad? They didn't know what the 'else' statement was for.",
-		Groovy: "Why was the Groovy developer sad? They didn't know what the 'else' statement was for.",
-		"F#": "Why do F# developers wear glasses? Because they can't C#.",
-		CoffeeScript:
-			"Why do CoffeeScript developers wear glasses? Because they can't C#.",
-		R: "Why was the R developer sad? They didn't have any closures.",
-		Vue: "Why do Vue developers wear glasses? Because they can't C#.",
-		Sass: "Why was the Sass developer sad? They didn't know how to 'null' their feelings.",
-		Erlang: "Why was the Erlang developer sad? They didn't have any closures.",
-		Julia: "Why was the Julia developer sad? They didn't have any closures.",
-		HTML: "Why was the HTML developer sad? They didn't know what the 'else' statement was for.",
+		rust: "Why was the Rust developer sad? They didn't have any closures.",
+		perl: "Why was the Perl developer sad? Because they are unable to read any of their fucking code.",
+		coffeescript: "Why are CoffeeScript developers hyped? Because of the cocaine abuse.",
+		vue: "Why was the Vue developer happy? Because Vue is way better than React.",
+		html: "HTML?!, your most used techonlogy really? you pagan.",
 	};
 
 	const githubRequest = (url, name) => {
@@ -79,7 +69,7 @@
 	const createCV = async () => {
 		handleProfile()
 		handleContributions()
-		// handleLanguages()
+		handleLanguages()
 	};
 
 	const handleProfile = async () => {
@@ -101,13 +91,49 @@
 		typeProfile()
 	}
 
+	function end(){
+		entry_style = "last-fade"
+		console.log(export_this)
+		html2canvas(export_this).then(function(canvas) {
+			saveAs(canvas.toDataURL(), 'file-name.png');
+		});
+	}
+
+	function saveAs(uri, filename) {
+
+		var link = document.createElement('a');
+
+		if (typeof link.download === 'string') {
+
+			link.href = uri;
+			link.download = filename;
+
+			//Firefox requires the link to be in the body
+			document.body.appendChild(link);
+
+			//simulate click
+			link.click();
+
+			//remove the link when done
+			document.body.removeChild(link);
+
+		} else {
+
+		window.open(uri);
+
+		}
+	}
+
 	const typeProfile = async () => {
 		entry_style = "fade-out";
 
 		let contributions_text =  await contributionsText();
+		let languageCurrentText = await languageText();
+		console.log(languageCurrentText)
 		let repos_text = "<br><br>Let's have a look at your fucking idiotic open source projects that shouldn't even exist.<br><br>" + reposAmountText();
 		typewriter
 			.pauseFor(1500)
+			.callFunction(end)
 			.typeString('Hello fuckface')
 			.pauseFor(100)
 			.deleteAll()
@@ -117,7 +143,13 @@
 			.pauseFor(500)
 			.typeString(contributions_text)
 			.pauseFor(1000)
-			.start();
+			.typeString(`<br><br> Now let's check out ur favorite technology. Oh ${languageCurrentText[0]} a connoisseur choice. <br><br>Here is a joke for you: `)
+			.pauseFor(500)
+			.typeString(languageCurrentText[1])
+			.pauseFor(500)
+			.callFunction(end)
+			.pauseFor(1000)
+			.start()
 	}
 
 	const reposAmountText = () => {
@@ -204,17 +236,12 @@
 			name
 		);
 
-		top_repos = top_repos.sort(function(a, b) {
-			return b.stargazers_count - a.stargazers_count;
-		}).slice(0, 3);
-
 		for (const repo of top_repos){
 
 			let languages = await githubRequest(
 				`https://api.github.com/repos/$name$/`+ repo.name + `/languages`,
 				name
 			);
-
 			for (const [key, value] of Object.entries(languages)) {
 				if(languages_list[key] == undefined){
 					languages_list[key] = value;
@@ -226,27 +253,42 @@
 
 		languages = Object.entries(languages_list).sort(function(a, b) {
 			return b[1] - a[1];
-		});
+		}).slice(0, 4);
+
+
+		return languages[0][0];
+	}
+
+	const languageText = async () => {
+		let language = await handleLanguages(); 
+
+		return [language, jokes[language.toLowerCase()]]
 	}
 
 </script>
 
-<main>
+<main bind:this={export_this}>
 	<Entry className="{entry_style}" bind:name="{name}" create={createCV} />
-	<div class="container {entry_style}">
+	<div class="container text {entry_style}">
 		<div bind:this={type}>
 		</div>
+		<img src="./icons.png" class="icons" alt="Icons" width="35">
+	</div>
+	<div class="container export {entry_style}">
 		<img src="./icons.png" class="icons" alt="Icons" width="35">
 		<div class="export">
 			<div class="profile_container">
 				<img {src} alt="profile" class="profile" />
 				<div class="contributions_container">
 					<h2>{username}</h2>
+					<p class="contributions_info">You last month of suffering</p>
 					<Contributions contribution_list={contributions} />
 				</div>
 			</div>
-			<Repos repos_list={repos_sorted}/>
-			<Languages languages={languages} />
+			<div class="repo_lan_con">
+				<Repos repos_list={repos_sorted}/>
+				<Languages languages={languages} />
+			</div>
 		</div>
 	</div>
 </main>
@@ -264,6 +306,12 @@
 		background-size: 200px;
 	}
 
+	.contributions_info{
+		color: #dedede;
+        font-size: 12px;
+        margin: 0 0 8px 0;
+	}
+
 	.icons{
 		position: absolute;
 		left: 12px;
@@ -273,12 +321,21 @@
 	.profile_container {
 		display: flex;
 		color: white;
+		margin-bottom: 16px;
+		justify-content: space-between;
+		flex-direction: row-reverse;
+	}
+
+	.repo_lan_con{
+		display: flex;
+    	justify-content: space-between;
+		flex-wrap: wrap;
 	}
 
 	h2 {
 		font-weight: 800;
 		font-size: 32px;
-		margin: 0 0 8px 0;
+		margin: 0;
 	}
 
 	.container {
@@ -287,22 +344,25 @@
 		background-color: #1f1e1e;
 		color: white;
 		border-radius: 16px;
-        padding: 40px 40px;
+        padding: 30px 40px 40px 40px;
 		display: flex;
 		flex-direction: column;
 		transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
 		transform: translateX(100vw);
 		position: absolute;
-		padding-top: 30px;
 	}
 
-	@media only screen and (max-width: 768px) {
-		.container {
-			width: 70%;
-		}
+	.text.fade-out{
+		transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
+		transform: translateX(0%);
 	}
 
-	.fade-out{
+	.text.last-fade{
+		transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
+		transform: translateX(-200%);
+	}
+
+	.export.last-fade{
 		transition: all .7s cubic-bezier(0.39, 0.575, 0.565, 1);
 		transform: translateX(0%);
 	}
@@ -313,11 +373,18 @@
 		border-radius: 20px;
 	}
 
-	.contributions_container {
-		margin-left: 24px;
+	@media only screen and (max-width: 768px) {
+		.container {
+			width: 70%;
+			padding: 16px;
+		}
+		.export.container {
+			width: 80%;
+			padding: 16px;
+		}
+		.contributions_container {
+			margin-left: 12px;
+		}
 	}
-
-	.export{
-		display: none;
-	}
+	
 </style>
