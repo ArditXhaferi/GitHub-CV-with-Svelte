@@ -133,7 +133,6 @@
 		let repos_text = "<br><br>Let's have a look at your fucking idiotic open source projects that shouldn't even exist.<br><br>" + reposAmountText();
 		typewriter
 			.pauseFor(1500)
-			.callFunction(end)
 			.typeString('Hello fuckface')
 			.pauseFor(100)
 			.deleteAll()
@@ -149,6 +148,7 @@
 			.pauseFor(500)
 			.callFunction(end)
 			.pauseFor(1000)
+			.callFunction(end)
 			.start()
 	}
 
