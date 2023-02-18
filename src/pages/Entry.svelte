@@ -5,6 +5,7 @@
     export let name
     export let create
     export let className
+    export let error
 
 </script>
 
@@ -17,12 +18,22 @@
         </div>
     </div>
     <div>
-        <p>Hello <span class="i">"{name || "stranger"}"</span> !</p>
+        {#if error !== ''}
+            <p class="error">{ error }</p>
+        {/if}
+        <p>Hello <span class="i">{name || "stranger"}</span> !</p>
         <Input bind:name="{name}" create={create} />
     </div>
 </div>
 
 <style>
+    .error {
+        color: #ba3939;
+        background: #ffe0e0;
+        border: 1px solid #a33a3a;
+        padding: 0.4rem;
+        border-radius: 0.4rem;
+    }
     h1{
         font-size: 40px;
     }

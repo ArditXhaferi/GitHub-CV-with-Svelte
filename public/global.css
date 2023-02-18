@@ -7,6 +7,8 @@ body {
 	padding: 0px;
 	background-color: #403357;
 	overflow: hidden;
+	justify-content: center;
+	align-items: center;
 }
 
 @font-face {

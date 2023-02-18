@@ -16,7 +16,7 @@
     .language_info{
         color: #dedede;
         font-size: 12px;
-        margin-bottom: 16px;
+        margin-bottom: 10px;
         text-align: right;
     }
 

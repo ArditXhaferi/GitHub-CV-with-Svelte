@@ -57,6 +57,12 @@
         font-weight: 400;
         margin: 0;
     }
+
+    @media only screen and (max-width: 768px) {
+        .searchInpt {
+            padding: 0 0 0 20px;
+        }
+	}
     
     .searchInpt:focus {
         outline: none;

@@ -21,10 +21,11 @@
 	let type;
 	let typewriter;
 	let export_this;
+	let error = "";
 
 	onMount(async () => {
 		typewriter = new Typewriter(type, {
-			delay: 1,
+			delay: 40,
 			loop: false
 		});
 	});
@@ -42,7 +43,7 @@
 		typescript: "Your favorite technology is TypeScript, yet all this just to make 90% of your code to be any",
 		go: "Why was the Go developer sad? Because it has a ugly ass mascot.",
 		swift: "Why do Swift developer sad? Because they couldn't afford a M1 macbook.",
-		css: "Why was the CSS developer sad? Because it isn't even a fucking programming language.",
+		css: "Why was the CSS developer sad? Because it isn't even a programming language.",
 		c: "Why do C developers wear glasses? Because they can't C#.",
 		"objective-c":
 			"Why do Objective-C developers wear glasses? Because they can't C#.",
@@ -78,6 +79,10 @@
 			name
 		);
 
+		if(repos.message === 'Not Found' || repos === []){
+			error = `Sorry, can't find user: "` + name + '", or not enough data available.';
+		}
+
 		repos_sorted = repos.sort(function(a, b) {
 			return b.stargazers_count - a.stargazers_count;
 		}).slice(0, 3);
@@ -87,41 +92,13 @@
 			username = repos[0]["owner"]["login"];
 		}
 
-
-		typeProfile()
+		if(repos.message != 'Not Found'){
+			typeProfile()
+		}
 	}
 
 	function end(){
 		entry_style = "last-fade"
-		console.log(export_this)
-		html2canvas(export_this).then(function(canvas) {
-			saveAs(canvas.toDataURL(), 'file-name.png');
-		});
-	}
-
-	function saveAs(uri, filename) {
-
-		var link = document.createElement('a');
-
-		if (typeof link.download === 'string') {
-
-			link.href = uri;
-			link.download = filename;
-
-			//Firefox requires the link to be in the body
-			document.body.appendChild(link);
-
-			//simulate click
-			link.click();
-
-			//remove the link when done
-			document.body.removeChild(link);
-
-		} else {
-
-		window.open(uri);
-
-		}
 	}
 
 	const typeProfile = async () => {
@@ -130,9 +107,9 @@
 		let contributions_text =  await contributionsText();
 		let languageCurrentText = await languageText();
 		console.log(languageCurrentText)
-		let repos_text = "<br><br>Let's have a look at your fucking idiotic open source projects that shouldn't even exist.<br><br>" + reposAmountText();
+		let repos_text = "<br><br>Let's have a look at your idiotic open source projects that shouldn't even exist.<br><br>" + reposAmountText();
 		typewriter
-			.pauseFor(1500)
+			.pauseFor(500)
 			.typeString('Hello fuckface')
 			.pauseFor(100)
 			.deleteAll()
@@ -146,7 +123,9 @@
 			.pauseFor(500)
 			.typeString(languageCurrentText[1])
 			.pauseFor(500)
-			.callFunction(end)
+			.typeString("<br><br> Sorry for cursing to much and being mean here is a nice graphic if you want to share it with your friends ... but we both know you don't have any.")
+			.pauseFor(1000)
+			.typeString("<br><br> loading...")
 			.pauseFor(1000)
 			.callFunction(end)
 			.start()
@@ -193,19 +172,19 @@
 		});
 
 		if(streakOfnotPushing == 0){
-			textToReturn += "Wow you pushed code today, okay you fucking nerd";
+			textToReturn += "Wow you pushed code today, okay you nerd";
 		}
 		if(streakOfnotPushing == 1){
-			textToReturn += "Wow you pushed code yesterday, okay you fucking nerd";
+			textToReturn += "Wow you pushed code yesterday, okay you nerd";
 		}
 		if(streakOfnotPushing == 2){
-			textToReturn += "Hmm you didn't push code yesterday or the day before that, fucking fraud";
+			textToReturn += "Hmm you didn't push code yesterday or the day before that ... fraud";
 		}
 		if(streakOfnotPushing > 2 && streakOfnotPushing < 10){
 			textToReturn += `${streakOfnotPushing} is the number of days you didn't push code, how are you able to look into your mother's eyes like this?`;
 		}
 		if(streakOfnotPushing > 9 && streakOfnotPushing < 25){
-			textToReturn += `It's been weeks since you didn't push code, fucking weeks (to be precise: ${streakOfnotPushing} days), get back into it you dumbfuck.`;
+			textToReturn += `It's been weeks since you didn't push code bruh, <b style='color: #${hcolor};'>(to be precise: ${streakOfnotPushing} days)</b>, get back into it you dumbfuck.`;
 		}
 		if(streakOfnotPushing > 24 && streakOfnotPushing != latest_contributions.length){
 			textToReturn += `Almost a fucking month without contributions, a whole ${streakOfnotPushing} days without pushing anything, why are you even on this app? just close it right now.`;
@@ -214,7 +193,7 @@
 			textToReturn += `A whole month doing jack shit, I'm just dissapointed in you. You had ${latest_contributions.length} days to push anything but yet you chose to do fuckall`
 		}
 
-		textToReturn += `<br><br> But besides that good job for ${amount} contributions last month, amazing really.`;
+		textToReturn += `<br><br> But besides that good job for <b style='color: #${hcolor};'> ${amount} contributions last month </b>, amazing really.`;
 
 		return textToReturn
 	}
@@ -268,14 +247,18 @@
 </script>
 
 <main bind:this={export_this}>
-	<Entry className="{entry_style}" bind:name="{name}" create={createCV} />
+	<Entry className="{entry_style}" bind:name="{name}" create={createCV} error="{error}" />
 	<div class="container text {entry_style}">
-		<div bind:this={type}>
+		<div class="text-box">
+			<div bind:this={type}>
+			</div>
 		</div>
 		<img src="./icons.png" class="icons" alt="Icons" width="35">
 	</div>
 	<div class="container export {entry_style}">
-		<img src="./icons.png" class="icons" alt="Icons" width="35">
+		<div class="img-container">
+			<img src="./icons.png" class="icons" alt="Icons" width="35">
+		</div>
 		<div class="export">
 			<div class="profile_container">
 				<img {src} alt="profile" class="profile" />
@@ -304,6 +287,13 @@
 		padding: 50px;
 		background-image: url("/pattern1.svg");
 		background-size: 200px;
+		height: 100vh;
+	}
+
+	.text-box{
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column-reverse;
 	}
 
 	.contributions_info{
@@ -321,7 +311,7 @@
 	.profile_container {
 		display: flex;
 		color: white;
-		margin-bottom: 16px;
+		margin-bottom: 20px;
 		justify-content: space-between;
 		flex-direction: row-reverse;
 	}
@@ -340,6 +330,7 @@
 
 	.container {
 		border-top: 25px solid #423d38;
+		max-height: 80vh;
 		width: 50%;
 		background-color: #1f1e1e;
 		color: white;
@@ -375,15 +366,12 @@
 
 	@media only screen and (max-width: 768px) {
 		.container {
-			width: 70%;
+			width: 80%;
 			padding: 16px;
 		}
 		.export.container {
 			width: 80%;
 			padding: 16px;
-		}
-		.contributions_container {
-			margin-left: 12px;
 		}
 	}
 	
