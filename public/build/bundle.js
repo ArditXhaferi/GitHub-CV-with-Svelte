@@ -9703,43 +9703,43 @@ var app = (function () {
     			create_component(repos_1.$$.fragment);
     			t10 = space();
     			create_component(languages_1.$$.fragment);
-    			add_location(div0, file, 252, 3, 9111);
+    			add_location(div0, file, 256, 3, 9179);
     			attr_dev(div1, "class", "text-box svelte-xn2mbl");
-    			add_location(div1, file, 251, 2, 9085);
+    			add_location(div1, file, 255, 2, 9153);
     			if (!src_url_equal(img0.src, img0_src_value = "./icons.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "class", "icons svelte-xn2mbl");
     			attr_dev(img0, "alt", "Icons");
     			attr_dev(img0, "width", "35");
-    			add_location(img0, file, 255, 2, 9155);
+    			add_location(img0, file, 259, 2, 9223);
     			attr_dev(div2, "class", div2_class_value = "container text " + /*entry_style*/ ctx[1] + " svelte-xn2mbl");
-    			add_location(div2, file, 250, 1, 9040);
+    			add_location(div2, file, 254, 1, 9108);
     			if (!src_url_equal(img1.src, img1_src_value = "./icons.png")) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "class", "icons svelte-xn2mbl");
     			attr_dev(img1, "alt", "Icons");
     			attr_dev(img1, "width", "35");
-    			add_location(img1, file, 259, 3, 9303);
+    			add_location(img1, file, 263, 3, 9371);
     			attr_dev(div3, "class", "img-container");
-    			add_location(div3, file, 258, 2, 9272);
+    			add_location(div3, file, 262, 2, 9340);
     			if (!src_url_equal(img2.src, img2_src_value = /*src*/ ctx[2])) attr_dev(img2, "src", img2_src_value);
     			attr_dev(img2, "alt", "profile");
     			attr_dev(img2, "class", "profile svelte-xn2mbl");
-    			add_location(img2, file, 263, 4, 9435);
+    			add_location(img2, file, 267, 4, 9503);
     			attr_dev(h2, "class", "svelte-xn2mbl");
-    			add_location(h2, file, 265, 5, 9526);
+    			add_location(h2, file, 269, 5, 9594);
     			attr_dev(p, "class", "contributions_info svelte-xn2mbl");
-    			add_location(p, file, 266, 5, 9551);
+    			add_location(p, file, 270, 5, 9619);
     			attr_dev(div4, "class", "contributions_container");
-    			add_location(div4, file, 264, 4, 9483);
+    			add_location(div4, file, 268, 4, 9551);
     			attr_dev(div5, "class", "profile_container svelte-xn2mbl");
-    			add_location(div5, file, 262, 3, 9399);
+    			add_location(div5, file, 266, 3, 9467);
     			attr_dev(div6, "class", "repo_lan_con svelte-xn2mbl");
-    			add_location(div6, file, 270, 3, 9694);
+    			add_location(div6, file, 274, 3, 9762);
     			attr_dev(div7, "class", "export");
-    			add_location(div7, file, 261, 2, 9375);
+    			add_location(div7, file, 265, 2, 9443);
     			attr_dev(div8, "class", div8_class_value = "container export " + /*entry_style*/ ctx[1] + " svelte-xn2mbl");
-    			add_location(div8, file, 257, 1, 9225);
+    			add_location(div8, file, 261, 1, 9293);
     			attr_dev(main, "class", "svelte-xn2mbl");
-    			add_location(main, file, 248, 0, 8918);
+    			add_location(main, file, 252, 0, 8986);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9869,6 +9869,7 @@ var app = (function () {
     	let typewriter;
     	let export_this;
     	let error = "";
+    	let firstCall = true;
 
     	onMount(async () => {
     		typewriter = new Typewriter(type, { delay: 40, loop: false });
@@ -9906,9 +9907,13 @@ var app = (function () {
     	};
 
     	const createCV = async () => {
-    		handleProfile();
-    		handleContributions();
-    		handleLanguages();
+    		if (firstCall) {
+    			handleProfile();
+    			handleContributions();
+    			handleLanguages();
+    		}
+
+    		firstCall = false;
     	};
 
     	const handleProfile = async () => {
@@ -10094,6 +10099,7 @@ var app = (function () {
     		typewriter,
     		export_this,
     		error,
+    		firstCall,
     		jokes,
     		githubRequest,
     		createCV,
@@ -10123,6 +10129,7 @@ var app = (function () {
     		if ('typewriter' in $$props) typewriter = $$props.typewriter;
     		if ('export_this' in $$props) $$invalidate(8, export_this = $$props.export_this);
     		if ('error' in $$props) $$invalidate(9, error = $$props.error);
+    		if ('firstCall' in $$props) firstCall = $$props.firstCall;
     		if ('jokes' in $$props) jokes = $$props.jokes;
     	};
 

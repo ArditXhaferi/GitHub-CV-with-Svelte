@@ -22,6 +22,7 @@
 	let typewriter;
 	let export_this;
 	let error = "";
+	let firstCall = true;
 
 	onMount(async () => {
 		typewriter = new Typewriter(type, {
@@ -68,9 +69,12 @@
 	};
 
 	const createCV = async () => {
-		handleProfile()
-		handleContributions()
-		handleLanguages()
+		if(firstCall){
+			handleProfile()
+			handleContributions()
+			handleLanguages()
+		}
+		firstCall = false;
 	};
 
 	const handleProfile = async () => {
