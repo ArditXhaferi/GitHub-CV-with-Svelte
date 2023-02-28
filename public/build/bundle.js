@@ -9703,43 +9703,43 @@ var app = (function () {
     			create_component(repos_1.$$.fragment);
     			t10 = space();
     			create_component(languages_1.$$.fragment);
-    			add_location(div0, file, 252, 3, 9119);
+    			add_location(div0, file, 252, 3, 9111);
     			attr_dev(div1, "class", "text-box svelte-xn2mbl");
-    			add_location(div1, file, 251, 2, 9093);
+    			add_location(div1, file, 251, 2, 9085);
     			if (!src_url_equal(img0.src, img0_src_value = "./icons.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "class", "icons svelte-xn2mbl");
     			attr_dev(img0, "alt", "Icons");
     			attr_dev(img0, "width", "35");
-    			add_location(img0, file, 255, 2, 9163);
+    			add_location(img0, file, 255, 2, 9155);
     			attr_dev(div2, "class", div2_class_value = "container text " + /*entry_style*/ ctx[1] + " svelte-xn2mbl");
-    			add_location(div2, file, 250, 1, 9048);
+    			add_location(div2, file, 250, 1, 9040);
     			if (!src_url_equal(img1.src, img1_src_value = "./icons.png")) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "class", "icons svelte-xn2mbl");
     			attr_dev(img1, "alt", "Icons");
     			attr_dev(img1, "width", "35");
-    			add_location(img1, file, 259, 3, 9311);
+    			add_location(img1, file, 259, 3, 9303);
     			attr_dev(div3, "class", "img-container");
-    			add_location(div3, file, 258, 2, 9280);
+    			add_location(div3, file, 258, 2, 9272);
     			if (!src_url_equal(img2.src, img2_src_value = /*src*/ ctx[2])) attr_dev(img2, "src", img2_src_value);
     			attr_dev(img2, "alt", "profile");
     			attr_dev(img2, "class", "profile svelte-xn2mbl");
-    			add_location(img2, file, 263, 4, 9443);
+    			add_location(img2, file, 263, 4, 9435);
     			attr_dev(h2, "class", "svelte-xn2mbl");
-    			add_location(h2, file, 265, 5, 9534);
+    			add_location(h2, file, 265, 5, 9526);
     			attr_dev(p, "class", "contributions_info svelte-xn2mbl");
-    			add_location(p, file, 266, 5, 9559);
+    			add_location(p, file, 266, 5, 9551);
     			attr_dev(div4, "class", "contributions_container");
-    			add_location(div4, file, 264, 4, 9491);
+    			add_location(div4, file, 264, 4, 9483);
     			attr_dev(div5, "class", "profile_container svelte-xn2mbl");
-    			add_location(div5, file, 262, 3, 9407);
+    			add_location(div5, file, 262, 3, 9399);
     			attr_dev(div6, "class", "repo_lan_con svelte-xn2mbl");
-    			add_location(div6, file, 270, 3, 9702);
+    			add_location(div6, file, 270, 3, 9694);
     			attr_dev(div7, "class", "export");
-    			add_location(div7, file, 261, 2, 9383);
+    			add_location(div7, file, 261, 2, 9375);
     			attr_dev(div8, "class", div8_class_value = "container export " + /*entry_style*/ ctx[1] + " svelte-xn2mbl");
-    			add_location(div8, file, 257, 1, 9233);
+    			add_location(div8, file, 257, 1, 9225);
     			attr_dev(main, "class", "svelte-xn2mbl");
-    			add_location(main, file, 248, 0, 8926);
+    			add_location(main, file, 248, 0, 8918);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9914,7 +9914,7 @@ var app = (function () {
     	const handleProfile = async () => {
     		repos = await githubRequest(`https://api.github.com/users/$name$/repos?per_page=100`, name);
 
-    		if (repos.message === 'Not Found' || repos === []) {
+    		if (repos.message === 'Not Found' || repos.length == 0) {
     			$$invalidate(9, error = `Sorry, can't find user: "` + name + '", or not enough data available.');
     		}
 
@@ -9927,7 +9927,7 @@ var app = (function () {
     			$$invalidate(3, username = repos[0]["owner"]["login"]);
     		}
 
-    		if (repos.message != 'Not Found') {
+    		if (repos.message != 'Not Found' || repos.length == 0) {
     			typeProfile();
     		}
     	};
@@ -9940,9 +9940,8 @@ var app = (function () {
     		$$invalidate(1, entry_style = "fade-out");
     		let contributions_text = await contributionsText();
     		let languageCurrentText = await languageText();
-    		console.log(languageCurrentText);
     		let repos_text = "<br><br>Let's have a look at your idiotic open source projects that shouldn't even exist.<br><br>" + reposAmountText();
-    		typewriter.pauseFor(500).typeString('Hello fuckface').pauseFor(100).deleteAll().typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`).pauseFor(500).typeString(repos_text).pauseFor(500).typeString(contributions_text).pauseFor(1000).typeString(`<br><br> Now let's check out ur favorite technology. Oh ${languageCurrentText[0]} a connoisseur choice. <br><br>Here is a joke for you: `).pauseFor(500).typeString(languageCurrentText[1]).pauseFor(500).typeString("<br><br> Sorry for cursing to much and being mean here is a nice graphic if you want to share it with your friends ... but we both know you don't have any.").pauseFor(1000).typeString("<br><br> loading...").pauseFor(1000).callFunction(end).start();
+    		typewriter.pauseFor(200).typeString('Hello fuckface').pauseFor(200).deleteAll().typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`).pauseFor(500).typeString(repos_text).pauseFor(500).typeString(contributions_text).pauseFor(1000).typeString(`<br><br> Now let's check out ur favorite technology. Oh ${languageCurrentText[0]} a connoisseur choice. <br><br>Here is a joke for you: `).pauseFor(500).typeString(languageCurrentText[1]).pauseFor(500).typeString("<br><br> Sorry for cursing to much and being mean here is a nice graphic if you want to share it with your friends ... but we both know you don't have any.").pauseFor(1000).typeString("<br><br> loading...").pauseFor(1000).callFunction(end).start();
     	};
 
     	const reposAmountText = () => {

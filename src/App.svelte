@@ -79,7 +79,8 @@
 			name
 		);
 
-		if(repos.message === 'Not Found' || repos === []){
+
+		if(repos.message === 'Not Found' || repos.length == 0){
 			error = `Sorry, can't find user: "` + name + '", or not enough data available.';
 		}
 
@@ -92,7 +93,7 @@
 			username = repos[0]["owner"]["login"];
 		}
 
-		if(repos.message != 'Not Found'){
+		if(repos.message != 'Not Found' || repos.length == 0){
 			typeProfile()
 		}
 	}
@@ -106,12 +107,11 @@
 
 		let contributions_text =  await contributionsText();
 		let languageCurrentText = await languageText();
-		console.log(languageCurrentText)
 		let repos_text = "<br><br>Let's have a look at your idiotic open source projects that shouldn't even exist.<br><br>" + reposAmountText();
 		typewriter
-			.pauseFor(500)
+			.pauseFor(200)
 			.typeString('Hello fuckface')
-			.pauseFor(100)
+			.pauseFor(200)
 			.deleteAll()
 			.typeString(`I mean hello <b style='color: #${hcolor};'>${name}</b>, let's see if you actualy #code haha.`)
 			.pauseFor(500)
